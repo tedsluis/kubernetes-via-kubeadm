@@ -1,8 +1,7 @@
 # kubernetes-via-kubeadm
 How to deploy a Kubernetes master and node on a single Fedora host via kubeadm.    
   
-By default it is not possible (and not recommanded) to run applications on `master` node(s). In case you have only one host you could deploy a Kubernetes cluster on one host via `kubeadm`.  
-Basicly this means that all the components needs to be installed on the same host and that the `master` should be configured `schedulable`.  
+By default it is not possible (and not recommanded) to run applications on `master` node(s). In case you have only one host you could deploy a Kubernetes cluster on one host via `kubeadm`. Basicly this means that all the components needs to be installed on the same host and that the `master` should be configured `schedulable`.  
 Down here you find the steps to configure a Fedora hosts as a single cluster hosts.  
   
 ## Prerequisites 
@@ -46,6 +45,7 @@ Swapping is not supported by `kubelet`.
 ## Create the cluster  
 I choose to use `flannel` as network layer. This means:  
 * kubeadm needs to know a network CIDR: `--pod-network-cidr=10.244.0.0/16`
+* `net.bridge.bridge-nf-call-iptables` needs to be set to 1.
 
 ```
 [root@nuc ~]# sysctl net.bridge.bridge-nf-call-iptables=1
@@ -110,22 +110,22 @@ Read on, you're not yet there...
 ## Make sure kubectl works  
 For regular users:  
 ```
-[root@nuc ~]# mkdir -p $HOME/.kube
-[root@nuc ~]# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-cp: '/root/.kube/config' overschrijven? y
+[some-user@nuc ~]# mkdir -p $HOME/.kube
+[some-user@nuc ~]# sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 ``` 
 Alternatively, if you are the root user, you could run this:  
 ```
-export KUBECONFIG=/etc/kubernetes/admin.conf
+[root@nuc ~]# export KUBECONFIG=/etc/kubernetes/admin.conf
 ```  
-Now `kubectl` works:  
+Now `kubectl` works, but the node is `NotReady`:  
 ```
 [root@nuc ~]# kubectl get nodes
 NAME               STATUS     ROLES     AGE       VERSION
 nuc.bachstraat20   NotReady   master    1m        v1.9.1
 ```
   
-## Deploy a `pod` network
+## Deploy a `pod` network  
+In order to enable connectivity between pods, we deploy `flannel`:  
 ```
 [root@nuc ~]# kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
 clusterrole "flannel" created
@@ -215,7 +215,7 @@ Events:
   Normal  Starting                 9m                 kube-proxy, nuc.bachstraat20  Starting kube-proxy.
   Normal  NodeReady                1m                 kubelet, nuc.bachstraat20     Node nuc.bachstraat20 status is now: NodeReady
 ```
-The node looks `okay`, but since it is a master, it is `NoSchedule`! 
+The node looks `okay`, but since it is a master, it reports `Taints: node-role.kubernetes.io/master:NoSchedule`. So it can't schedule any pods.    
       
 ## Make master node being able to schedule pods
 By default it is not possible (and not very wise) to schedule pods on the master hosts, but if you just have only one host, you can make it `schedulable`.  
@@ -234,7 +234,46 @@ Now the host is ready to schedule pods:
 NAME               STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE                          KERNEL-VERSION            CONTAINER-RUNTIME
 nuc.bachstraat20   Ready     master    17m       v1.9.1    <none>        Fedora 27 (Workstation Edition)   4.15.10-300.fc27.x86_64   docker://1.13.1
 ```
-   
+  
+## Install Kubernetes Dashboard  
+```
+[root@nuc ~]# kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+secret "kubernetes-dashboard-certs" created
+serviceaccount "kubernetes-dashboard" created
+role "kubernetes-dashboard-minimal" created
+rolebinding "kubernetes-dashboard-minimal" created
+deployment "kubernetes-dashboard" created
+service "kubernetes-dashboard" created
+```
+To make the dashboard accessible via a `node-port` change type in the `kubernetes-dashboard` service: ClusterIP to type: NodePort and save file: 
+```
+[root@nuc ~]#  kubectl -n kube-system edit service kubernetes-dashboard
+service "kubernetes-dashboard" edited
+
+[root@nuc ~]# kubectl get service -n kube-system
+NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
+kube-dns               ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP   2h
+kubernetes-dashboard   NodePort    10.104.204.179   <none>        443:30717/TCP   30m
+```
+The Dashboard has been exposed on port 31707 (HTTPS). It is accessible from a web browser at: https://nuc.bachstraat20:31707  
+Continue below to create credentieels to login to the kubernetes-dashboard.
+  
+## Create an admin user  
+To create a cluster-admin user, use these files: [admin-user.yaml](https://github.com/tedsluis/kubernetes-via-kubeadm/blob/master/admin-user.yaml) and [admin-user-clusterrolebinding.yaml](https://github.com/tedsluis/kubernetes-via-kubeadm/blob/master/admin-user-clusterrolebinding.yaml):  
+```
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f admin-user.yaml
+serviceaccount "admin-user" created
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f admin-user-clusterrolebinding.yaml 
+clusterrolebinding "admin-user" created
+```
+  
+To get the token for this `admin-user`:  
+```
+[root@nuc kubernetes-via-kubeadm]# kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep ^token: | sed 's/token:[ ]*//'
+eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLW1oNzIyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIwNWM0ZDZmZC0yZjYyLTExZTgtYTMxNi1jMDNmZDU2MmJiNzciLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.butKxegADx3JQvKpn9Prf7RL_SoxaEyi_scYOvXurm4BAwEj8zfC9a7djqQ9mBtd5cQHlljvMb-3qFc6UPOzAwR8fc5khk-nAkH-5XeahpT8WsyxMcKxqLuyAg8gh4ZtMKvBPk9kOWDtyRBzAeGkisbLxr43ecKO71F5G8D7HR2UGSm-x4Pvhq0uqj8GyIcHw902Ti92BPuBRf-SyTl8uDCQJSDkS5Tru5w0p82borNuVXd1mmDwuI87ApQrqXTY9rbJ61m8iTr0kKJBqw5bHAUAhxwAVtVEKQNNKT6cxWp1FlhHbNkM9bhcj1qj8bN1QCMjPWlWKj7NkPbbBAJthQ
+``` 
+You can use the token to login to the kubernetes-dashboard.  
+  
 ## Tear down the cluster 
 Perform these steps to desolve the cluster completly.  
 ```
