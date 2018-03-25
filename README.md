@@ -261,9 +261,9 @@ Continue below to create credentieels to login to the kubernetes-dashboard.
 ## Create an admin user  
 To create a cluster-admin user, use these files: [admin-user.yaml](https://github.com/tedsluis/kubernetes-via-kubeadm/blob/master/admin-user.yaml) and [admin-user-clusterrolebinding.yaml](https://github.com/tedsluis/kubernetes-via-kubeadm/blob/master/admin-user-clusterrolebinding.yaml):  
 ```
-[root@nuc kubernetes-via-kubeadm]# kubectl create -f admin-user.yaml
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f admin-user.yaml -n kube-system
 serviceaccount "admin-user" created
-[root@nuc kubernetes-via-kubeadm]# kubectl create -f admin-user-clusterrolebinding.yaml 
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f admin-user-clusterrolebinding.yaml
 clusterrolebinding "admin-user" created
 ```
   
@@ -275,6 +275,50 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW5
 You can use the token to login to the kubernetes-dashboard.  
   
 [![Kubernetes Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)
+  
+## Deploying Prometheus 
+
+```
+[root@nuc ~]# kubectl create namespace prometheus
+namespace "prometheus" created
+
+[root@nuc ~]# kubectl -n prometheus create -f prometheus-sa.yaml 
+serviceaccount "prometheus" created
+
+[root@nuc ~]# kubectl -n prometheus create -f prometheus-sa-clusterrolebinding.yaml
+clusterrolebinding "prometheus" created
+
+[root@nuc ~]# wget -O prometheus-config.yaml https://raw.githubusercontent.com/prometheus/prometheus/master/documentation/examples/prometheus-kubernetes.yml
+
+[root@nuc ~]# kubectl create configmap prometheus-config --from-file=prometheus-config.yaml -n prometheus
+configmap "prometheus-config" created
+
+[root@nuc ~]# kubectl create -f prometheus-deployment.yaml -n prometheus
+deployment "prometheus" created
+
+[root@nuc ~]# kubectl -n prometheus logs prometheus-7c7b9585f9-5lczv
+level=info ts=2018-03-25T15:25:47.849051693Z caller=main.go:220 msg="Starting Prometheus" version="(version=2.2.1, branch=HEAD, revision=bc6058c81272a8d938c05e75607371284236aadc)"
+level=info ts=2018-03-25T15:25:47.849106663Z caller=main.go:221 build_context="(go=go1.10, user=root@149e5b3f0829, date=20180314-14:15:45)"
+level=info ts=2018-03-25T15:25:47.84913756Z caller=main.go:222 host_details="(Linux 4.15.10-300.fc27.x86_64 #1 SMP Thu Mar 15 17:13:04 UTC 2018 x86_64 prometheus-7c7b9585f9-5lczv (none))"
+level=info ts=2018-03-25T15:25:47.849165208Z caller=main.go:223 fd_limits="(soft=1048576, hard=1048576)"
+level=info ts=2018-03-25T15:25:47.852738361Z caller=main.go:504 msg="Starting TSDB ..."
+level=info ts=2018-03-25T15:25:47.852769276Z caller=web.go:382 component=web msg="Start listening for connections" address=0.0.0.0:9090
+level=info ts=2018-03-25T15:25:47.859354423Z caller=main.go:514 msg="TSDB started"
+level=info ts=2018-03-25T15:25:47.859412609Z caller=main.go:588 msg="Loading configuration file" filename=/var/lib/prometheus/prometheus-config.yaml
+level=info ts=2018-03-25T15:25:47.861036136Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-03-25T15:25:47.861868278Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-03-25T15:25:47.862872662Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-03-25T15:25:47.863871661Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-03-25T15:25:47.865287076Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-03-25T15:25:47.86634838Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-03-25T15:25:47.867490787Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-03-25T15:25:47.868484361Z caller=main.go:491 msg="Server is ready to receive web requests."
+
+[root@nuc ~]# kubectl -n prometheus create -f prometheus-service.yaml 
+service "prometheus" created
+```
+
+
   
 ## Tear down the cluster 
 Perform these steps to desolve the cluster completly.  
