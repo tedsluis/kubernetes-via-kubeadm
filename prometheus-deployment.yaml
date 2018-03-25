@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      serviceAccountName: prometheus
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            - "--config.file=/var/lib/prometheus/config/prometheus-config.yaml"
+            - "--storage.tsdb.path=/var/lib/prometheus/data/"
+          ports:
+            - containerPort: 9090
+          volumeMounts:
+            - name: prometheus-configmap-volume
+              mountPath: /var/lib/prometheus/config/
+            - name: prometheus-storage-volume
+              mountPath: /var/lib/prometheus/data/
+      volumes:
+        - name: prometheus-configmap-volume
+          configMap:
+            defaultMode: 420
+            name: prometheus-config
+  
+        - name: prometheus-storage-volume
+          emptyDir: {}
