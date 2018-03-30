@@ -288,9 +288,7 @@ serviceaccount "prometheus" created
 [root@nuc ~]# kubectl -n prometheus create -f prometheus-sa-clusterrolebinding.yaml
 clusterrolebinding "prometheus" created
 
-[root@nuc ~]# wget -O prometheus-config.yaml https://raw.githubusercontent.com/prometheus/prometheus/master/documentation/examples/prometheus-kubernetes.yml
-
-[root@nuc ~]# kubectl create configmap prometheus-config --from-file=prometheus-config.yaml -n prometheus
+[root@nuc ~]# kubectl create -f prometheus-config.yaml -n prometheus
 configmap "prometheus-config" created
 
 [root@nuc ~]# kubectl create -f prometheus-deployment.yaml -n prometheus
