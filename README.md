@@ -14,8 +14,20 @@ One host with:
 ### Install the kubeadm, kubectl and kubelet packages  
 ```
 [root@nuc ~]# dnf install kubernetes-kubeadm kubernetes kubernetes-client
+
 [root@nuc ~]# systemctl enable kubelet && systemctl start kubelet
+
+[root@nuc ~]# journalctl -u kubelet.service
+Apr 01 15:38:29 nuc.bachstraat20 systemd[1]: Started Kubernetes Kubelet Server.
+Apr 01 15:38:30 nuc.bachstraat20 kubelet[26127]: I0401 15:38:30.029968   26127 server.go:182] Version: v1.9.1
+Apr 01 15:38:30 nuc.bachstraat20 kubelet[26127]: I0401 15:38:30.030074   26127 feature_gate.go:220] feature gates: &{{} map[]}
+Apr 01 15:38:30 nuc.bachstraat20 kubelet[26127]: Error: failed to run Kubelet: unable to load client CA file /etc/kubernetes/pki/ca.crt: open /etc/kubernetes/pki/ca.crt: no such file or directory
+Apr 01 15:38:30 nuc.bachstraat20 systemd[1]: kubelet.service: Main process exited, code=exited, status=1/FAILURE
+Apr 01 15:38:30 nuc.bachstraat20 systemd[1]: kubelet.service: Unit entered failed state.
+Apr 01 15:38:30 nuc.bachstraat20 systemd[1]: kubelet.service: Failed with result 'exit-code'.
+Apr 01 15:38:39 nuc.bachstraat20 systemd[1]: Stopped Kubernetes Kubelet Server.
 ```
+Notice that the `kubelet.service` logging is reporting errors! Don't worry. This is because it is not yet configuered.  
   
 ### Disable selinux 
 `SELINUX` is not yet support with `kubeadm`, so it must be turned off!  
@@ -133,7 +145,14 @@ nuc.bachstraat20   NotReady   master    1m        v1.9.1
 ```
   
 ### Deploy a pod network  
-In order to enable connectivity between pods, we deploy `flannel`:  
+If we check the `kubelet.service` logging, we notice a network issue.  
+```
+Apr 01 15:49:41 nuc.bachstraat20 kubelet[26228]: W0401 15:49:41.832172   26228 cni.go:171] Unable to update cni config: No networks found in /etc/cni/net.d
+Apr 01 15:49:41 nuc.bachstraat20 kubelet[26228]: E0401 15:49:41.832492   26228 kubelet.go:2105] Container runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin
+Apr 01 15:49:46 nuc.bachstraat20 kubelet[26228]: W0401 15:49:46.835857   26228 cni.go:171] Unable to update cni config: No networks found in /etc/cni/net.d
+Apr 01 15:49:46 nuc.bachstraat20 kubelet[26228]: E0401 15:49:46.836149   26228 kubelet.go:2105] Container runtime network not ready: NetworkReady=false reason:NetworkPluginNotReady message:docker: network plugin
+```
+In order to enable connectivity between pods, we need to deploy the `flannel` `cni plugin`:  
 ```
 [root@nuc ~]# kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
 clusterrole "flannel" created
@@ -141,6 +160,42 @@ clusterrolebinding "flannel" created
 serviceaccount "flannel" created
 configmap "kube-flannel-cfg" created
 daemonset "kube-flannel-ds" created
+
+[root@nuc ~]# kubectl -n kube-system logs kube-flannel-ds-d9j74 
+I0401 13:54:57.978383       1 main.go:474] Determining IP address of default interface
+I0401 13:54:57.979471       1 main.go:487] Using interface with name eno1 and address 192.168.11.100
+I0401 13:54:57.979515       1 main.go:504] Defaulting external address to interface address (192.168.11.100)
+I0401 13:54:58.018470       1 kube.go:130] Waiting 10m0s for node controller to sync
+I0401 13:54:58.018585       1 kube.go:283] Starting kube subnet manager
+I0401 13:54:59.018704       1 kube.go:137] Node controller sync successful
+I0401 13:54:59.018772       1 main.go:234] Created subnet manager: Kubernetes Subnet Manager - nuc.bachstraat20
+I0401 13:54:59.018798       1 main.go:237] Installing signal handlers
+I0401 13:54:59.019013       1 main.go:352] Found network config - Backend type: vxlan
+I0401 13:54:59.019194       1 vxlan.go:119] VXLAN config: VNI=1 Port=0 GBP=false DirectRouting=false
+I0401 13:54:59.050793       1 main.go:299] Wrote subnet file to /run/flannel/subnet.env
+I0401 13:54:59.050967       1 main.go:303] Running backend.
+I0401 13:54:59.051077       1 main.go:321] Waiting for all goroutines to exit
+I0401 13:54:59.051192       1 vxlan_network.go:56] watching for new subnet leases
+I0401 13:54:59.063168       1 iptables.go:114] Some iptables rules are missing; deleting and recreating rules
+I0401 13:54:59.063195       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 -d 10.244.0.0/16 -j RETURN
+I0401 13:54:59.063794       1 iptables.go:114] Some iptables rules are missing; deleting and recreating rules
+I0401 13:54:59.063829       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 -j ACCEPT
+I0401 13:54:59.065109       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 ! -d 224.0.0.0/4 -j MASQUERADE
+I0401 13:54:59.066232       1 iptables.go:136] Deleting iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/24 -j RETURN
+I0401 13:54:59.067421       1 iptables.go:136] Deleting iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/16 -j MASQUERADE
+I0401 13:54:59.068736       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 -d 10.244.0.0/16 -j RETURN
+I0401 13:54:59.071332       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 ! -d 224.0.0.0/4 -j MASQUERADE
+I0401 13:54:59.073720       1 iptables.go:124] Adding iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/24 -j RETURN
+I0401 13:54:59.076483       1 iptables.go:124] Adding iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/16 -j MASQUERADE
+I0401 13:55:00.066124       1 iptables.go:136] Deleting iptables rule: -d 10.244.0.0/16 -j ACCEPT
+I0401 13:55:00.069984       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 -j ACCEPT
+I0401 13:55:00.076888       1 iptables.go:124] Adding iptables rule: -d 10.244.0.0/16 -j ACCEPT
+
+[root@nuc ~]# journalctl -u kubelet.service
+Apr 01 15:54:55 nuc.bachstraat20 kubelet[26228]: I0401 15:54:55.833848   26228 reconciler.go:217] operationExecutor.VerifyControllerAttachedVolume started for volume "flannel-cfg" (UniqueName: "kubernetes.io/con
+Apr 01 15:54:55 nuc.bachstraat20 kubelet[26228]: I0401 15:54:55.833976   26228 reconciler.go:217] operationExecutor.VerifyControllerAttachedVolume started for volume "flannel-token-q9zrd" (UniqueName: "kubernete
+Apr 01 15:54:55 nuc.bachstraat20 kubelet[26228]: I0401 15:54:55.834078   26228 reconciler.go:217] operationExecutor.VerifyControllerAttachedVolume started for volume "cni" (UniqueName: "kubernetes.io/host-path/4
+Apr 01 15:54:55 nuc.bachstraat20 kubelet[26228]: I0401 15:54:55.834259   26228 reconciler.go:217] operationExecutor.VerifyControllerAttachedVolume started for volume "run" (UniqueName: "kubernetes.io/host-path/4
 ```
 Now the node reports `ready`:  
 ```
@@ -152,15 +207,6 @@ nuc.bachstraat20   Ready     master    8m        v1.9.1
 ### Check the node
 ```
 [root@nuc ~]# kubectl describe nodes
-NAME                                       READY     STATUS    RESTARTS   AGE
-etcd-nuc.bachstraat20                      1/1       Running   0          7m
-kube-apiserver-nuc.bachstraat20            1/1       Running   0          8m
-kube-controller-manager-nuc.bachstraat20   1/1       Running   0          7m
-kube-dns-6f4fd4bdf-z6z9k                   3/3       Running   0          8m
-kube-flannel-ds-d9j74                      1/1       Running   0          2m
-kube-proxy-d945n                           1/1       Running   0          8m
-kube-scheduler-nuc.bachstraat20            1/1       Running   0          7m
-[root@nuc kubelet.service.d]# kubectl describe nodes
 Name:               nuc.bachstraat20
 Roles:              master
 Labels:             beta.kubernetes.io/arch=amd64
@@ -528,7 +574,7 @@ kubernetes-dashboard   NodePort    10.100.227.126   <none>        443:30120/TCP 
 monitoring-grafana     ClusterIP   10.102.178.122   <none>        80/TCP          10m
 monitoring-influxdb    ClusterIP   10.103.66.221    <none>        8086/TCP        12m
 ```
-The Dashboard has been exposed on port 30120 (HTTPS). It is accessible from a web browser at: https://nuc.bachstraat20:30120  
+In this case the Dashboard is exposed on port 30120 (HTTPS). It is accessible from a web browser at: https://nuc.bachstraat20:30120  
 Continue below to create credentieels to login to the kubernetes-dashboard.
   
 ### Create an admin user  
