@@ -162,34 +162,34 @@ configmap "kube-flannel-cfg" created
 daemonset "kube-flannel-ds" created
 
 [root@nuc ~]# kubectl -n kube-system logs kube-flannel-ds-d9j74 
-I0401 13:54:57.978383       1 main.go:474] Determining IP address of default interface
-I0401 13:54:57.979471       1 main.go:487] Using interface with name eno1 and address 192.168.11.100
-I0401 13:54:57.979515       1 main.go:504] Defaulting external address to interface address (192.168.11.100)
-I0401 13:54:58.018470       1 kube.go:130] Waiting 10m0s for node controller to sync
-I0401 13:54:58.018585       1 kube.go:283] Starting kube subnet manager
-I0401 13:54:59.018704       1 kube.go:137] Node controller sync successful
-I0401 13:54:59.018772       1 main.go:234] Created subnet manager: Kubernetes Subnet Manager - nuc.bachstraat20
-I0401 13:54:59.018798       1 main.go:237] Installing signal handlers
-I0401 13:54:59.019013       1 main.go:352] Found network config - Backend type: vxlan
-I0401 13:54:59.019194       1 vxlan.go:119] VXLAN config: VNI=1 Port=0 GBP=false DirectRouting=false
-I0401 13:54:59.050793       1 main.go:299] Wrote subnet file to /run/flannel/subnet.env
-I0401 13:54:59.050967       1 main.go:303] Running backend.
-I0401 13:54:59.051077       1 main.go:321] Waiting for all goroutines to exit
-I0401 13:54:59.051192       1 vxlan_network.go:56] watching for new subnet leases
-I0401 13:54:59.063168       1 iptables.go:114] Some iptables rules are missing; deleting and recreating rules
-I0401 13:54:59.063195       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 -d 10.244.0.0/16 -j RETURN
-I0401 13:54:59.063794       1 iptables.go:114] Some iptables rules are missing; deleting and recreating rules
-I0401 13:54:59.063829       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 -j ACCEPT
-I0401 13:54:59.065109       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 ! -d 224.0.0.0/4 -j MASQUERADE
-I0401 13:54:59.066232       1 iptables.go:136] Deleting iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/24 -j RETURN
-I0401 13:54:59.067421       1 iptables.go:136] Deleting iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/16 -j MASQUERADE
-I0401 13:54:59.068736       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 -d 10.244.0.0/16 -j RETURN
-I0401 13:54:59.071332       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 ! -d 224.0.0.0/4 -j MASQUERADE
-I0401 13:54:59.073720       1 iptables.go:124] Adding iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/24 -j RETURN
-I0401 13:54:59.076483       1 iptables.go:124] Adding iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/16 -j MASQUERADE
-I0401 13:55:00.066124       1 iptables.go:136] Deleting iptables rule: -d 10.244.0.0/16 -j ACCEPT
-I0401 13:55:00.069984       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 -j ACCEPT
-I0401 13:55:00.076888       1 iptables.go:124] Adding iptables rule: -d 10.244.0.0/16 -j ACCEPT
+I0401 15:54:57.978383       1 main.go:474] Determining IP address of default interface
+I0401 15:54:57.979471       1 main.go:487] Using interface with name eno1 and address 192.168.11.100
+I0401 15:54:57.979515       1 main.go:504] Defaulting external address to interface address (192.168.11.100)
+I0401 15:54:58.018470       1 kube.go:130] Waiting 10m0s for node controller to sync
+I0401 15:54:58.018585       1 kube.go:283] Starting kube subnet manager
+I0401 15:54:59.018704       1 kube.go:137] Node controller sync successful
+I0401 15:54:59.018772       1 main.go:234] Created subnet manager: Kubernetes Subnet Manager - nuc.bachstraat20
+I0401 15:54:59.018798       1 main.go:237] Installing signal handlers
+I0401 15:54:59.019013       1 main.go:352] Found network config - Backend type: vxlan
+I0401 15:54:59.019194       1 vxlan.go:119] VXLAN config: VNI=1 Port=0 GBP=false DirectRouting=false
+I0401 15:54:59.050793       1 main.go:299] Wrote subnet file to /run/flannel/subnet.env
+I0401 15:54:59.050967       1 main.go:303] Running backend.
+I0401 15:54:59.051077       1 main.go:321] Waiting for all goroutines to exit
+I0401 15:54:59.051192       1 vxlan_network.go:56] watching for new subnet leases
+I0401 15:54:59.063168       1 iptables.go:114] Some iptables rules are missing; deleting and recreating rules
+I0401 15:54:59.063195       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 -d 10.244.0.0/16 -j RETURN
+I0401 15:54:59.063794       1 iptables.go:114] Some iptables rules are missing; deleting and recreating rules
+I0401 15:54:59.063829       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 -j ACCEPT
+I0401 15:54:59.065109       1 iptables.go:136] Deleting iptables rule: -s 10.244.0.0/16 ! -d 224.0.0.0/4 -j MASQUERADE
+I0401 15:54:59.066232       1 iptables.go:136] Deleting iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/24 -j RETURN
+I0401 15:54:59.067421       1 iptables.go:136] Deleting iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/16 -j MASQUERADE
+I0401 15:54:59.068736       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 -d 10.244.0.0/16 -j RETURN
+I0401 15:54:59.071332       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 ! -d 224.0.0.0/4 -j MASQUERADE
+I0401 15:54:59.073720       1 iptables.go:124] Adding iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/24 -j RETURN
+I0401 15:54:59.076483       1 iptables.go:124] Adding iptables rule: ! -s 10.244.0.0/16 -d 10.244.0.0/16 -j MASQUERADE
+I0401 15:55:00.066124       1 iptables.go:136] Deleting iptables rule: -d 10.244.0.0/16 -j ACCEPT
+I0401 15:55:00.069984       1 iptables.go:124] Adding iptables rule: -s 10.244.0.0/16 -j ACCEPT
+I0401 15:55:00.076888       1 iptables.go:124] Adding iptables rule: -d 10.244.0.0/16 -j ACCEPT
 
 [root@nuc ~]# journalctl -u kubelet.service
 Apr 01 15:54:55 nuc.bachstraat20 kubelet[26228]: I0401 15:54:55.833848   26228 reconciler.go:217] operationExecutor.VerifyControllerAttachedVolume started for volume "flannel-cfg" (UniqueName: "kubernetes.io/con
@@ -315,25 +315,25 @@ service "monitoring-influxdb" created
    888   888  888 888    888 888  888   X88K   888    888 888    888
    888   888  888 888    888 Y88b 888 .d8""8b. 888  .d88P 888   d88P
  8888888 888  888 888    888  "Y88888 888  888 8888888P"  8888888P"
-[I] 2018-04-01T14:00:28Z InfluxDB starting, version unknown, branch unknown, commit unknown
-[I] 2018-04-01T14:00:28Z Go version go1.8.3, GOMAXPROCS set to 4
-[I] 2018-04-01T14:00:28Z Using configuration at: /etc/config.toml
-[I] 2018-04-01T14:00:38Z Using data dir: /data/data service=store
-[I] 2018-04-01T14:00:38Z opened service service=subscriber
-[I] 2018-04-01T14:00:38Z Starting monitor system service=monitor
-[I] 2018-04-01T14:00:38Z 'build' registered for diagnostics monitoring service=monitor
-[I] 2018-04-01T14:00:38Z 'runtime' registered for diagnostics monitoring service=monitor
-[I] 2018-04-01T14:00:38Z 'network' registered for diagnostics monitoring service=monitor
-[I] 2018-04-01T14:00:38Z 'system' registered for diagnostics monitoring service=monitor
-[I] 2018-04-01T14:00:38Z Starting precreation service with check interval of 10m0s, advance period of 30m0s service=shard-precreation
-[I] 2018-04-01T14:00:38Z Starting snapshot service service=snapshot
-[I] 2018-04-01T14:00:38Z Starting continuous query service service=continuous_querier
-[I] 2018-04-01T14:00:38Z Starting HTTP service service=httpd
-[I] 2018-04-01T14:00:38Z Authentication enabled:false service=httpd
-[I] 2018-04-01T14:00:38Z Listening on HTTP:[::]:8086 service=httpd
-[I] 2018-04-01T14:00:38Z Starting retention policy enforcement service with check interval of 30m0s service=retention
-[I] 2018-04-01T14:00:38Z Listening for signals
-[I] 2018-04-01T14:00:38Z Storing statistics in database '_internal' retention policy 'monitor', at interval 10s service=monitor
+[I] 2018-04-01T16:00:28Z InfluxDB starting, version unknown, branch unknown, commit unknown
+[I] 2018-04-01T16:00:28Z Go version go1.8.3, GOMAXPROCS set to 4
+[I] 2018-04-01T16:00:28Z Using configuration at: /etc/config.toml
+[I] 2018-04-01T16:00:38Z Using data dir: /data/data service=store
+[I] 2018-04-01T16:00:38Z opened service service=subscriber
+[I] 2018-04-01T16:00:38Z Starting monitor system service=monitor
+[I] 2018-04-01T16:00:38Z 'build' registered for diagnostics monitoring service=monitor
+[I] 2018-04-01T16:00:38Z 'runtime' registered for diagnostics monitoring service=monitor
+[I] 2018-04-01T16:00:38Z 'network' registered for diagnostics monitoring service=monitor
+[I] 2018-04-01T16:00:38Z 'system' registered for diagnostics monitoring service=monitor
+[I] 2018-04-01T16:00:38Z Starting precreation service with check interval of 10m0s, advance period of 30m0s service=shard-precreation
+[I] 2018-04-01T16:00:38Z Starting snapshot service service=snapshot
+[I] 2018-04-01T16:00:38Z Starting continuous query service service=continuous_querier
+[I] 2018-04-01T16:00:38Z Starting HTTP service service=httpd
+[I] 2018-04-01T16:00:38Z Authentication enabled:false service=httpd
+[I] 2018-04-01T16:00:38Z Listening on HTTP:[::]:8086 service=httpd
+[I] 2018-04-01T16:00:38Z Starting retention policy enforcement service with check interval of 30m0s service=retention
+[I] 2018-04-01T16:00:38Z Listening for signals
+[I] 2018-04-01T16:00:38Z Storing statistics in database '_internal' retention policy 'monitor', at interval 10s service=monitor
 ```
 
 ### Grafana
@@ -345,169 +345,169 @@ service "monitoring-grafana" created
 [root@nuc ~]# kubectl -n kube-system logs monitoring-grafana-65757b9656-c2b6r 
 Starting a utility program that will configure Grafana
 Starting Grafana in foreground mode
-t=2018-04-01T14:02:35+0000 lvl=info msg="Starting Grafana" logger=main version=v4.4.3 commit=unknown-dev compiled=2018-04-01T14:02:35+0000
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config loaded from" logger=settings file=/usr/share/grafana/conf/defaults.ini
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config loaded from" logger=settings file=/etc/grafana/grafana.ini
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.paths.data=/var/lib/grafana"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.paths.logs=/var/log/grafana"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.log.mode=console"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_SERVER_PROTOCOL=http"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_SERVER_HTTP_PORT=3000"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_SERVER_ROOT_URL=/"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_ANONYMOUS_ENABLED=true"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_BASIC_ENABLED=false"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Path Home" logger=settings path=/usr/share/grafana
-t=2018-04-01T14:02:35+0000 lvl=info msg="Path Data" logger=settings path=/var/lib/grafana
-t=2018-04-01T14:02:35+0000 lvl=info msg="Path Logs" logger=settings path=/var/log/grafana
-t=2018-04-01T14:02:35+0000 lvl=info msg="Path Plugins" logger=settings path=/usr/share/grafana/data/plugins
-t=2018-04-01T14:02:35+0000 lvl=info msg="Initializing DB" logger=sqlstore dbtype=sqlite3
-t=2018-04-01T14:02:35+0000 lvl=info msg="Starting DB migration" logger=migrator
-t=2018-04-01T14:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="create migration_log table"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="create user table"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index user.login"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index user.email"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_user_login - v1"
-t=2018-04-01T14:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_user_email - v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table user to user_v1 - v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create user table v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_user_login - v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_user_email - v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="copy data_source v1 to v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table user_v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Add column help_flags1 to user table"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Update user table charset"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create temp user table v1-7"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_email - v1-7"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_org_id - v1-7"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_code - v1-7"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_status - v1-7"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Update temp_user table charset"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create star table"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index star.user_id_dashboard_id"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create org table v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_org_name - v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create org_user table v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_org_user_org_id - v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_org_user_org_id_user_id - v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="copy data account to org"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Skipping migration condition not fulfilled" logger=migrator id="copy data account to org"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="copy data account_user to org_user"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Skipping migration condition not fulfilled" logger=migrator id="copy data account_user to org_user"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table account"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table account_user"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Update org table charset"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Update org_user table charset"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard table"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="add index dashboard.account_id"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_account_id_slug"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_tag table"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_tag.dasboard_id_term"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_dashboard_tag_dashboard_id_term - v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table dashboard to dashboard_v1 - v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_dashboard_org_id - v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_org_id_slug - v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="copy dashboard v1 to v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="drop table dashboard_v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard.data to mediumtext v1"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Add column updated_by in dashboard - v2"
-t=2018-04-01T14:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Add column created_by in dashboard - v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add column gnetId in dashboard"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for gnetId in dashboard"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add column plugin_id in dashboard"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for plugin_id in dashboard"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for dashboard_id in dashboard_tag"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard table charset"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard_tag table charset"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create data_source table"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add index data_source.account_id"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index data_source.account_id_name"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index IDX_data_source_account_id - v1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_data_source_account_id_name - v1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table data_source to data_source_v1 - v1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create data_source table v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_data_source_org_id - v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_data_source_org_id_name - v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="copy data_source v1 to v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table data_source_v1 #2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add column with_credentials"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add secure json data column"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Update data_source table charset"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create api_key table"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.account_id"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.key"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.account_id_name"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index IDX_api_key_account_id - v1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_api_key_key - v1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_api_key_account_id_name - v1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table api_key to api_key_v1 - v1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create api_key table v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_api_key_org_id - v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_api_key_key - v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_api_key_org_id_name - v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="copy api_key v1 to v2"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table api_key_v1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Update api_key table charset"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_snapshot table v4"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop table dashboard_snapshot_v4 #1"
-t=2018-04-01T14:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_snapshot table v5 #2"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_snapshot_key - v5"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_snapshot_delete_key - v5"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_dashboard_snapshot_user_id - v5"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard_snapshot to mediumtext v2"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard_snapshot table charset"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create quota table v1"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_quota_org_id_user_id_target - v1"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update quota table charset"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create plugin_setting table"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_plugin_setting_org_id_plugin_id - v1"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Add column plugin_version to plugin_settings"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update plugin_setting table charset"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create session table"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table playlist table"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table playlist_item table"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create playlist table v2"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create playlist item table v2"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update playlist table charset"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update playlist_item table charset"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="drop preferences table v2"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="drop preferences table v3"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create preferences table v3"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update preferences table charset"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create alert table v1"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert org_id & id "
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert state"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert dashboard_id"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create alert_notification table v1"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Add column is_default"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert_notification org_id & name"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update alert table charset"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update alert_notification table charset"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old annotation table v4"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create annotation table v5"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 0 v3"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 1 v3"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 2 v3"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 3 v3"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 4 v3"
-t=2018-04-01T14:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update annotation table charset"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column region_id to annotation table"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="create test_data table"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_version table v1"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="add index dashboard_version.dashboard_id"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_version.dashboard_id and dashboard_version.version"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="Set dashboard version to 1 where 0"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="save existing dashboard data in dashboard_version table v1"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard_version.data to mediumtext v1"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Created default admin user: admin"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Starting plugin search" logger=plugins
-t=2018-04-01T14:02:39+0000 lvl=warn msg="Plugin dir does not exist" logger=plugins dir=/usr/share/grafana/data/plugins
-t=2018-04-01T14:02:39+0000 lvl=info msg="Plugin dir created" logger=plugins dir=/usr/share/grafana/data/plugins
-t=2018-04-01T14:02:39+0000 lvl=info msg="Initializing Alerting" logger=alerting.engine
-t=2018-04-01T14:02:39+0000 lvl=info msg="Initializing CleanUpService" logger=cleanup
-t=2018-04-01T14:02:39+0000 lvl=info msg="Initializing Stream Manager"
-t=2018-04-01T14:02:39+0000 lvl=info msg="Initializing HTTP Server" logger=http.server address=0.0.0.0:3000 protocol=http subUrl= socket=
+t=2018-04-01T16:02:35+0000 lvl=info msg="Starting Grafana" logger=main version=v4.4.3 commit=unknown-dev compiled=2018-04-01T16:02:35+0000
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config loaded from" logger=settings file=/usr/share/grafana/conf/defaults.ini
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config loaded from" logger=settings file=/etc/grafana/grafana.ini
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.paths.data=/var/lib/grafana"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.paths.logs=/var/log/grafana"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.log.mode=console"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_SERVER_PROTOCOL=http"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_SERVER_HTTP_PORT=3000"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_SERVER_ROOT_URL=/"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_ANONYMOUS_ENABLED=true"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_ANONYMOUS_ORG_ROLE=Admin"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_BASIC_ENABLED=false"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Path Home" logger=settings path=/usr/share/grafana
+t=2018-04-01T16:02:35+0000 lvl=info msg="Path Data" logger=settings path=/var/lib/grafana
+t=2018-04-01T16:02:35+0000 lvl=info msg="Path Logs" logger=settings path=/var/log/grafana
+t=2018-04-01T16:02:35+0000 lvl=info msg="Path Plugins" logger=settings path=/usr/share/grafana/data/plugins
+t=2018-04-01T16:02:35+0000 lvl=info msg="Initializing DB" logger=sqlstore dbtype=sqlite3
+t=2018-04-01T16:02:35+0000 lvl=info msg="Starting DB migration" logger=migrator
+t=2018-04-01T16:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="create migration_log table"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="create user table"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index user.login"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index user.email"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_user_login - v1"
+t=2018-04-01T16:02:35+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_user_email - v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table user to user_v1 - v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create user table v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_user_login - v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_user_email - v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="copy data_source v1 to v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table user_v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Add column help_flags1 to user table"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Update user table charset"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create temp user table v1-7"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_email - v1-7"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_org_id - v1-7"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_code - v1-7"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_status - v1-7"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Update temp_user table charset"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create star table"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index star.user_id_dashboard_id"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create org table v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_org_name - v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create org_user table v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_org_user_org_id - v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_org_user_org_id_user_id - v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="copy data account to org"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Skipping migration condition not fulfilled" logger=migrator id="copy data account to org"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="copy data account_user to org_user"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Skipping migration condition not fulfilled" logger=migrator id="copy data account_user to org_user"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table account"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table account_user"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Update org table charset"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Update org_user table charset"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard table"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="add index dashboard.account_id"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_account_id_slug"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_tag table"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_tag.dasboard_id_term"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_dashboard_tag_dashboard_id_term - v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table dashboard to dashboard_v1 - v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_dashboard_org_id - v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_org_id_slug - v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="copy dashboard v1 to v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="drop table dashboard_v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard.data to mediumtext v1"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Add column updated_by in dashboard - v2"
+t=2018-04-01T16:02:36+0000 lvl=info msg="Executing migration" logger=migrator id="Add column created_by in dashboard - v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add column gnetId in dashboard"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for gnetId in dashboard"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add column plugin_id in dashboard"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for plugin_id in dashboard"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for dashboard_id in dashboard_tag"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard table charset"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard_tag table charset"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create data_source table"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add index data_source.account_id"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index data_source.account_id_name"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index IDX_data_source_account_id - v1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_data_source_account_id_name - v1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table data_source to data_source_v1 - v1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create data_source table v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_data_source_org_id - v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_data_source_org_id_name - v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="copy data_source v1 to v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table data_source_v1 #2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add column with_credentials"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Add secure json data column"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Update data_source table charset"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create api_key table"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.account_id"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.key"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.account_id_name"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index IDX_api_key_account_id - v1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_api_key_key - v1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_api_key_account_id_name - v1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table api_key to api_key_v1 - v1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create api_key table v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_api_key_org_id - v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_api_key_key - v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_api_key_org_id_name - v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="copy api_key v1 to v2"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table api_key_v1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="Update api_key table charset"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_snapshot table v4"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="drop table dashboard_snapshot_v4 #1"
+t=2018-04-01T16:02:37+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_snapshot table v5 #2"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_snapshot_key - v5"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_snapshot_delete_key - v5"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_dashboard_snapshot_user_id - v5"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard_snapshot to mediumtext v2"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard_snapshot table charset"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create quota table v1"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_quota_org_id_user_id_target - v1"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update quota table charset"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create plugin_setting table"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_plugin_setting_org_id_plugin_id - v1"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Add column plugin_version to plugin_settings"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update plugin_setting table charset"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create session table"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table playlist table"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table playlist_item table"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create playlist table v2"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create playlist item table v2"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update playlist table charset"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update playlist_item table charset"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="drop preferences table v2"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="drop preferences table v3"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create preferences table v3"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update preferences table charset"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create alert table v1"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert org_id & id "
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert state"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert dashboard_id"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create alert_notification table v1"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Add column is_default"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert_notification org_id & name"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update alert table charset"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update alert_notification table charset"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old annotation table v4"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="create annotation table v5"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 0 v3"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 1 v3"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 2 v3"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 3 v3"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 4 v3"
+t=2018-04-01T16:02:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update annotation table charset"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column region_id to annotation table"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="create test_data table"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_version table v1"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="add index dashboard_version.dashboard_id"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_version.dashboard_id and dashboard_version.version"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="Set dashboard version to 1 where 0"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="save existing dashboard data in dashboard_version table v1"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard_version.data to mediumtext v1"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Created default admin user: admin"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Starting plugin search" logger=plugins
+t=2018-04-01T16:02:39+0000 lvl=warn msg="Plugin dir does not exist" logger=plugins dir=/usr/share/grafana/data/plugins
+t=2018-04-01T16:02:39+0000 lvl=info msg="Plugin dir created" logger=plugins dir=/usr/share/grafana/data/plugins
+t=2018-04-01T16:02:39+0000 lvl=info msg="Initializing Alerting" logger=alerting.engine
+t=2018-04-01T16:02:39+0000 lvl=info msg="Initializing CleanUpService" logger=cleanup
+t=2018-04-01T16:02:39+0000 lvl=info msg="Initializing Stream Manager"
+t=2018-04-01T16:02:39+0000 lvl=info msg="Initializing HTTP Server" logger=http.server address=0.0.0.0:3000 protocol=http subUrl= socket=
 Connected to the Grafana dashboard.
 The datasource for the Grafana dashboard is now set.
 ```
@@ -520,15 +520,15 @@ deployment "heapster" created
 service "heapster" created
 
 [root@nuc ~]# kubectl -n kube-system logs heapster-5c448886d-ssw4f 
-I0401 19:22:48.659393       1 heapster.go:72] /heapster --source=kubernetes:https://kubernetes.default --sink=influxdb:http://monitoring-influxdb.kube-system.svc:8086
-I0401 19:22:48.659440       1 heapster.go:73] Heapster version v1.4.2
-I0401 19:22:48.659642       1 configs.go:61] Using Kubernetes client with master "https://kubernetes.default" and version v1
-I0401 19:22:48.659664       1 configs.go:62] Using kubelet port 10255
-I0401 19:22:48.672479       1 influxdb.go:278] created influxdb sink with options: host:monitoring-influxdb.kube-system.svc:8086 user:root db:k8s
-I0401 19:22:48.672511       1 heapster.go:196] Starting with InfluxDB Sink
-I0401 19:22:48.672515       1 heapster.go:196] Starting with Metric Sink
-I0401 19:22:48.684241       1 heapster.go:106] Starting heapster on port 8082
-I0401 19:23:05.112135       1 influxdb.go:241] Created database "k8s" on influxDB server at "monitoring-influxdb.kube-system.svc:8086"
+I0401 16:04:48.659393       1 heapster.go:72] /heapster --source=kubernetes:https://kubernetes.default --sink=influxdb:http://monitoring-influxdb.kube-system.svc:8086
+I0401 16:04:48.659440       1 heapster.go:73] Heapster version v1.4.2
+I0401 16:04:48.659642       1 configs.go:61] Using Kubernetes client with master "https://kubernetes.default" and version v1
+I0401 16:04:48.659664       1 configs.go:62] Using kubelet port 10255
+I0401 16:04:48.672479       1 influxdb.go:278] created influxdb sink with options: host:monitoring-influxdb.kube-system.svc:8086 user:root db:k8s
+I0401 16:04:48.672511       1 heapster.go:196] Starting with InfluxDB Sink
+I0401 16:04:48.672515       1 heapster.go:196] Starting with Metric Sink
+I0401 16:04:48.684241       1 heapster.go:106] Starting heapster on port 8082
+I0401 16:04:05.112135       1 influxdb.go:241] Created database "k8s" on influxDB server at "monitoring-influxdb.kube-system.svc:8086"
 ```
 ### Heapster RBAC
 ```
@@ -546,20 +546,20 @@ deployment "kubernetes-dashboard" created
 service "kubernetes-dashboard" created
 
 [root@nuc ~]# kubectl -n kube-system logs kubernetes-dashboard-5bd6f767c7-xzcq4 
-2018/04/01 14:07:26 Starting overwatch
-2018/04/01 14:07:26 Using in-cluster config to connect to apiserver
-2018/04/01 14:07:26 Using service account token for csrf signing
-2018/04/01 14:07:26 No request provided. Skipping authorization
-2018/04/01 14:07:26 Successful initial request to the apiserver, version: v1.9.6
-2018/04/01 14:07:26 Generating JWE encryption key
-2018/04/01 14:07:26 New synchronizer has been registered: kubernetes-dashboard-key-holder-kube-system. Starting
-2018/04/01 14:07:26 Starting secret synchronizer for kubernetes-dashboard-key-holder in namespace kube-system
-2018/04/01 14:07:26 Storing encryption key in a secret
-2018/04/01 14:07:26 Creating in-cluster Heapster client
-2018/04/01 14:07:26 Successful request to heapster
-2018/04/01 14:07:26 Auto-generating certificates
-2018/04/01 14:07:26 Successfully created certificates
-2018/04/01 14:07:26 Serving securely on HTTPS port: 8443
+2018/04/01 16:07:26 Starting overwatch
+2018/04/01 16:07:26 Using in-cluster config to connect to apiserver
+2018/04/01 16:07:26 Using service account token for csrf signing
+2018/04/01 16:07:26 No request provided. Skipping authorization
+2018/04/01 16:07:26 Successful initial request to the apiserver, version: v1.9.6
+2018/04/01 16:07:26 Generating JWE encryption key
+2018/04/01 16:07:26 New synchronizer has been registered: kubernetes-dashboard-key-holder-kube-system. Starting
+2018/04/01 16:07:26 Starting secret synchronizer for kubernetes-dashboard-key-holder in namespace kube-system
+2018/04/01 16:07:26 Storing encryption key in a secret
+2018/04/01 16:07:26 Creating in-cluster Heapster client
+2018/04/01 16:07:26 Successful request to heapster
+2018/04/01 16:07:26 Auto-generating certificates
+2018/04/01 16:07:26 Successfully created certificates
+2018/04/01 16:07:26 Serving securely on HTTPS port: 8443
 ```
 To make the dashboard accessible via a `node-port` change the `type` in the `kubernetes-dashboard` service. Change `type: ClusterIP` to `type: NodePort` and save it: 
 ```
@@ -577,12 +577,20 @@ monitoring-influxdb    ClusterIP   10.103.66.221    <none>        8086/TCP      
 In this case the Dashboard is exposed on port 30120 (HTTPS). It is accessible from a web browser at: https://nuc.bachstraat20:30120  
 Continue below to create credentieels to login to the kubernetes-dashboard.
   
+### Clone this repo
+For some of the following steps you need some `manifest` files form this repo. Therefor it is useful to clone this repo on your Kubernetes master node:  
+```
+[root@nuc ~]# git clone https://github.com/tedsluis/kubernetes-via-kubeadm.git
+
+[root@nuc ~]# cd kubernetes-via-kubeadm
+```
+  
 ### Create an admin user  
 To create a cluster-admin user, use these files: [admin-user.yaml](https://github.com/tedsluis/kubernetes-via-kubeadm/blob/master/admin-user.yaml) and [admin-user-clusterrolebinding.yaml](https://github.com/tedsluis/kubernetes-via-kubeadm/blob/master/admin-user-clusterrolebinding.yaml):  
 ```
-[root@nuc ~]# kubectl create -f admin-user.yaml -n kube-system
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f admin-user.yaml -n kube-system
 serviceaccount "admin-user" created
-[root@nuc ~]# kubectl create -f admin-user-clusterrolebinding.yaml
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f admin-user-clusterrolebinding.yaml
 clusterrolebinding "admin-user" created
 ```
   
@@ -591,88 +599,87 @@ To get the token for this `admin-user`:
 [root@nuc kubernetes-via-kubeadm]# kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep ^token: | sed 's/token:[ ]*//'
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLW1oNzIyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIwNWM0ZDZmZC0yZjYyLTExZTgtYTMxNi1jMDNmZDU2MmJiNzciLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.butKxegADx3JQvKpn9Prf7RL_SoxaEyi_scYOvXurm4BAwEj8zfC9a7djqQ9mBtd5cQHlljvMb-3qFc6UPOzAwR8fc5khk-nAkH-5XeahpT8WsyxMcKxqLuyAg8gh4ZtMKvBPk9kOWDtyRBzAeGkisbLxr43ecKO71F5G8D7HR2UGSm-x4Pvhq0uqj8GyIcHw902Ti92BPuBRf-SyTl8uDCQJSDkS5Tru5w0p82borNuVXd1mmDwuI87ApQrqXTY9rbJ61m8iTr0kKJBqw5bHAUAhxwAVtVEKQNNKT6cxWp1FlhHbNkM9bhcj1qj8bN1QCMjPWlWKj7NkPbbBAJthQ
 ``` 
-You can use the token to login to the kubernetes-dashboard.  
+You can use the token to login to the kubernetes-dashboard, https://nuc.bachstraat20:30120:   
   
 [![Kubernetes Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)
   
-
-## Deploying Prometheus 
+## Deploying Prometheus with grafana
 
 ```
-[root@nuc ~]# kubectl create namespace prometheus
+[root@nuc kubernetes-via-kubeadm]# kubectl create namespace prometheus
 namespace "prometheus" created
 
-[root@nuc ~]# kubectl -n prometheus create -f prometheus-sa.yaml 
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f prometheus-sa.yaml 
 serviceaccount "prometheus" created
 
-[root@nuc ~]# kubectl -n prometheus create -f prometheus-sa-clusterrolebinding.yaml
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f prometheus-sa-clusterrolebinding.yaml
 clusterrolebinding "prometheus" created
 
-[root@nuc ~]# kubectl create -f prometheus-config.yaml -n prometheus
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f prometheus-config.yaml -n prometheus
 configmap "prometheus-config" created
 
-[root@nuc ~]# kubectl create -f prometheus-deployment.yaml -n prometheus
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f prometheus-deployment.yaml -n prometheus
 deployment "prometheus" created
 
-[root@nuc ~]# kubectl -n prometheus logs prometheus-7c7b9585f9-5lczv
-level=info ts=2018-03-25T15:25:47.849051693Z caller=main.go:220 msg="Starting Prometheus" version="(version=2.2.1, branch=HEAD, revision=bc6058c81272a8d938c05e75607371284236aadc)"
-level=info ts=2018-03-25T15:25:47.849106663Z caller=main.go:221 build_context="(go=go1.10, user=root@149e5b3f0829, date=20180314-14:15:45)"
-level=info ts=2018-03-25T15:25:47.84913756Z caller=main.go:222 host_details="(Linux 4.15.10-300.fc27.x86_64 #1 SMP Thu Mar 15 17:13:04 UTC 2018 x86_64 prometheus-7c7b9585f9-5lczv (none))"
-level=info ts=2018-03-25T15:25:47.849165208Z caller=main.go:223 fd_limits="(soft=1048576, hard=1048576)"
-level=info ts=2018-03-25T15:25:47.852738361Z caller=main.go:504 msg="Starting TSDB ..."
-level=info ts=2018-03-25T15:25:47.852769276Z caller=web.go:382 component=web msg="Start listening for connections" address=0.0.0.0:9090
-level=info ts=2018-03-25T15:25:47.859354423Z caller=main.go:514 msg="TSDB started"
-level=info ts=2018-03-25T15:25:47.859412609Z caller=main.go:588 msg="Loading configuration file" filename=/var/lib/prometheus/prometheus-config.yaml
-level=info ts=2018-03-25T15:25:47.861036136Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
-level=info ts=2018-03-25T15:25:47.861868278Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
-level=info ts=2018-03-25T15:25:47.862872662Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
-level=info ts=2018-03-25T15:25:47.863871661Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
-level=info ts=2018-03-25T15:25:47.865287076Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
-level=info ts=2018-03-25T15:25:47.86634838Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
-level=info ts=2018-03-25T15:25:47.867490787Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
-level=info ts=2018-03-25T15:25:47.868484361Z caller=main.go:491 msg="Server is ready to receive web requests."
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus logs prometheus-548c6968df-7tmfx 
+level=info ts=2018-04-01T16:11:15.924813688Z caller=main.go:220 msg="Starting Prometheus" version="(version=2.2.1, branch=HEAD, revision=bc6058c81272a8d938c05e75607371284236aadc)"
+level=info ts=2018-04-01T16:11:15.924910338Z caller=main.go:221 build_context="(go=go1.10, user=root@149e5b3f0829, date=20180314-14:15:45)"
+level=info ts=2018-04-01T16:11:15.924956501Z caller=main.go:222 host_details="(Linux 4.15.13-300.fc27.x86_64 #1 SMP Mon Mar 26 19:06:57 UTC 2018 x86_64 prometheus-548c6968df-7tmfx (none))"
+level=info ts=2018-04-01T16:11:15.925007235Z caller=main.go:223 fd_limits="(soft=1048576, hard=1048576)"
+level=info ts=2018-04-01T16:11:15.929083647Z caller=web.go:382 component=web msg="Start listening for connections" address=0.0.0.0:9090
+level=info ts=2018-04-01T16:11:15.929007066Z caller=main.go:504 msg="Starting TSDB ..."
+level=info ts=2018-04-01T16:11:15.935954091Z caller=main.go:514 msg="TSDB started"
+level=info ts=2018-04-01T16:11:15.936002475Z caller=main.go:588 msg="Loading configuration file" filename=/var/lib/prometheus/config/prometheus-config.yaml
+level=info ts=2018-04-01T16:11:15.938092113Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-04-01T16:11:15.940710905Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-04-01T16:11:15.941944098Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-04-01T16:11:15.943166979Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-04-01T16:11:15.944743655Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-04-01T16:11:15.94622556Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-04-01T16:11:15.947592433Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-04-01T16:11:15.948887143Z caller=kubernetes.go:191 component="discovery manager scrape" discovery=k8s msg="Using pod service account via in-cluster config"
+level=info ts=2018-04-01T16:11:15.950194674Z caller=main.go:491 msg="Server is ready to receive web requests."
 
-[root@nuc ~]# kubectl -n prometheus create -f prometheus-service.yaml 
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f prometheus-service.yaml 
 service "prometheus" created
 
-[root@nuc ~]# kubectl -n prometheus create -f node-exporter-deployment.yaml
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f node-exporter-deployment.yaml
 
-[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus logs node-exporter-j6k7m                                                                                               
-time="2018-03-30T18:41:12Z" level=info msg="Starting node_exporter (version=0.15.2, branch=HEAD, revision=98bc64930d34878b84a0f87dfe6e1a6da61e532d)" source="node_exporter.go:4$
-"                                                                                                                                                                               
-time="2018-03-30T18:41:12Z" level=info msg="Build context (go=go1.9.2, user=root@d5c4792c921f, date=20171205-14:50:53)" source="node_exporter.go:44"                            
-time="2018-03-30T18:41:12Z" level=info msg="No directory specified, see --collector.textfile.directory" source="textfile.go:57"                                                 
-time="2018-03-30T18:41:12Z" level=info msg="Enabled collectors:" source="node_exporter.go:50"                                                                                   
-time="2018-03-30T18:41:12Z" level=info msg=" - time" source="node_exporter.go:52"                                                                                               
-time="2018-03-30T18:41:12Z" level=info msg=" - filefd" source="node_exporter.go:52"                                                                                             
-time="2018-03-30T18:41:12Z" level=info msg=" - cpu" source="node_exporter.go:52"                                                                                                
-time="2018-03-30T18:41:12Z" level=info msg=" - hwmon" source="node_exporter.go:52"                                                                                              
-time="2018-03-30T18:41:12Z" level=info msg=" - vmstat" source="node_exporter.go:52"                                                                                             
-time="2018-03-30T18:41:12Z" level=info msg=" - zfs" source="node_exporter.go:52"                                                                                                
-time="2018-03-30T18:41:12Z" level=info msg=" - infiniband" source="node_exporter.go:52"                                                                                         
-time="2018-03-30T18:41:12Z" level=info msg=" - arp" source="node_exporter.go:52"                                                                                                
-time="2018-03-30T18:41:12Z" level=info msg=" - textfile" source="node_exporter.go:52"                                                                                           
-time="2018-03-30T18:41:12Z" level=info msg=" - stat" source="node_exporter.go:52"                                                                                               
-time="2018-03-30T18:41:12Z" level=info msg=" - uname" source="node_exporter.go:52"                                                                                              
-time="2018-03-30T18:41:12Z" level=info msg=" - xfs" source="node_exporter.go:52"                                                                                                
-time="2018-03-30T18:41:12Z" level=info msg=" - conntrack" source="node_exporter.go:52"                                                                                          
-time="2018-03-30T18:41:12Z" level=info msg=" - diskstats" source="node_exporter.go:52"                                                                                          
-time="2018-03-30T18:41:12Z" level=info msg=" - bcache" source="node_exporter.go:52"                                                                                             
-time="2018-03-30T18:41:12Z" level=info msg=" - netstat" source="node_exporter.go:52"                                                                                            
-time="2018-03-30T18:41:12Z" level=info msg=" - loadavg" source="node_exporter.go:52"                                                                                            
-time="2018-03-30T18:41:12Z" level=info msg=" - entropy" source="node_exporter.go:52"                                                                                            
-time="2018-03-30T18:41:12Z" level=info msg=" - sockstat" source="node_exporter.go:52"                                                                                           
-time="2018-03-30T18:41:12Z" level=info msg=" - edac" source="node_exporter.go:52"                                                                                               
-time="2018-03-30T18:41:12Z" level=info msg=" - filesystem" source="node_exporter.go:52"                                                                                         
-time="2018-03-30T18:41:12Z" level=info msg=" - meminfo" source="node_exporter.go:52"                                                                                            
-time="2018-03-30T18:41:12Z" level=info msg=" - ipvs" source="node_exporter.go:52"                                                                                               
-time="2018-03-30T18:41:12Z" level=info msg=" - mdadm" source="node_exporter.go:52"                                                                                              
-time="2018-03-30T18:41:12Z" level=info msg=" - netdev" source="node_exporter.go:52"                                                                                             
-time="2018-03-30T18:41:12Z" level=info msg=" - wifi" source="node_exporter.go:52"                                                                                               
-time="2018-03-30T18:41:12Z" level=info msg=" - timex" source="node_exporter.go:52"                                                                                              
-time="2018-03-30T18:41:12Z" level=info msg="Listening on :9100" source="node_exporter.go:76"      
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus logs node-exporter-w8spt 
+time="2018-04-01T16:14:54Z" level=info msg="Starting node_exporter (version=0.15.2, branch=HEAD, revision=98bc64930d34878b84a0f87dfe6e1a6da61e532d)" source="node_exporter.go:43"
+time="2018-04-01T16:14:54Z" level=info msg="Build context (go=go1.9.2, user=root@d5c4792c921f, date=20171205-14:50:53)" source="node_exporter.go:44"
+time="2018-04-01T16:14:54Z" level=info msg="No directory specified, see --collector.textfile.directory" source="textfile.go:57"
+time="2018-04-01T16:14:54Z" level=info msg="Enabled collectors:" source="node_exporter.go:50"
+time="2018-04-01T16:14:54Z" level=info msg=" - filesystem" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - zfs" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - hwmon" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - edac" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - vmstat" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - uname" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - time" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - timex" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - textfile" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - conntrack" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - loadavg" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - arp" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - mdadm" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - bcache" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - entropy" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - netdev" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - ipvs" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - meminfo" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - netstat" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - wifi" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - cpu" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - sockstat" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - xfs" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - diskstats" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - filefd" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - infiniband" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg=" - stat" source="node_exporter.go:52"
+time="2018-04-01T16:14:54Z" level=info msg="Listening on :9100" source="node_exporter.go:76"
 
-[root@nuc ]# kubectl -n prometheus create -f node-exporter-service.yaml 
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f node-exporter-service.yaml 
 service "node-exporter" created
 ```
 
@@ -681,14 +688,14 @@ service "node-exporter" created
 ## Tear down the cluster 
 Perform these steps to desolve the cluster completly.  
 ```
-[root@nuc ~]# kubectl drain nuc.bachstraat20 --delete-local-data --force --ignore-daemonsets
+[root@nuc kubernetes-via-kubeadm]# kubectl drain nuc.bachstraat20 --delete-local-data --force --ignore-daemonsets
 node "nuc.bachstraat20" cordoned
 WARNING: Deleting pods not managed by ReplicationController, ReplicaSet, Job, DaemonSet or StatefulSet: etcd-nuc.bachstraat20, kube-apiserver-nuc.bachstraat20, kube-controller-manager-nuc.bachstraat20, kube-scheduler-nuc.bachstraat20; Ignoring DaemonSet-managed pods: kube-proxy-5ksfm
 pod "kube-dns-6f4fd4bdf-kcl6k" evicted
 node "nuc.bachstraat20" drained
 [root@nuc ~]# kubectl delete node nuc.bachstraat20
 node "nuc.bachstraat20" deleted
-[root@nuc ~]# kubeadm reset
+[root@nuc kubernetes-via-kubeadm]# kubeadm reset
 [preflight] Running pre-flight checks.
 [reset] Stopping the kubelet service.
 [reset] Unmounting mounted directories in "/var/lib/kubelet"
@@ -697,6 +704,7 @@ node "nuc.bachstraat20" deleted
 [reset] Deleting contents of config directories: [/etc/kubernetes/manifests /etc/kubernetes/pki]
 [reset] Deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
 ```
+Now you will be able to start al over from the top.  
   
 ## Documentation  
 * [Using kubeadm to Create a Cluster](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/)  
