@@ -687,7 +687,11 @@ NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
 node-exporter   NodePort   10.105.153.131   <none>        9100:30001/TCP   41m
 prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 ```
-
+  
+Now you should be able to use the Prometheus GUI via this URL: https://nuc.bachstraat20:30000:  
+  
+[![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)
+   
 ## Grafana
 
 ```
@@ -919,6 +923,10 @@ node-exporter   NodePort   10.105.153.131   <none>        9100:30001/TCP   41m
 prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 ```
   
+Now you should be able to use the Grafana Dashboard via this URL: https://nuc.bachstraat20:30002 (user name = admin, password = admin):  
+  
+[![Grafana Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)
+     
 ## Tear down the cluster 
 Perform these steps to desolve the cluster completly.  
 ```
