@@ -681,9 +681,243 @@ time="2018-04-01T16:14:54Z" level=info msg="Listening on :9100" source="node_exp
 
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f node-exporter-service.yaml 
 service "node-exporter" created
+
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus get services
+NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+node-exporter   NodePort   10.105.153.131   <none>        9100:30001/TCP   41m
+prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 ```
 
+## Grafana
 
+```
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f grafana-deployment.yaml -n prometheus 
+deployment "grafana" created
+
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus logs grafana-7fc6f87484-qnpw5 
+t=2018-04-02T07:15:38+0000 lvl=info msg="Starting Grafana" logger=server version=5.0.4 commit=7dc36ae compiled=2018-03-28T11:52:41+0000
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config loaded from" logger=settings file=/usr/share/grafana/conf/defaults.ini
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config loaded from" logger=settings file=/etc/grafana/grafana.ini
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.paths.data=/var/lib/grafana"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.paths.logs=/var/log/grafana"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.paths.plugins=/var/lib/grafana/plugins"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.paths.provisioning=/etc/grafana/provisioning"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from command line" logger=settings arg="default.log.mode=console"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_SECURITY_ADMIN_PASSWORD=*********"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_ANONYMOUS_ENABLED=true"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_ANONYMOUS_ORG_ROLE=admin"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Config overridden from Environment variable" logger=settings var="GF_AUTH_BASIC_ENABLED=false"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Path Home" logger=settings path=/usr/share/grafana
+t=2018-04-02T07:15:38+0000 lvl=info msg="Path Data" logger=settings path=/var/lib/grafana
+t=2018-04-02T07:15:38+0000 lvl=info msg="Path Logs" logger=settings path=/var/log/grafana
+t=2018-04-02T07:15:38+0000 lvl=info msg="Path Plugins" logger=settings path=/var/lib/grafana/plugins
+t=2018-04-02T07:15:38+0000 lvl=info msg="Path Provisioning" logger=settings path=/etc/grafana/provisioning
+t=2018-04-02T07:15:38+0000 lvl=info msg="App mode production" logger=settings
+t=2018-04-02T07:15:38+0000 lvl=info msg="Initializing DB" logger=sqlstore dbtype=sqlite3
+t=2018-04-02T07:15:38+0000 lvl=info msg="Starting DB migration" logger=migrator
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create migration_log table"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create user table"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index user.login"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index user.email"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_user_login - v1"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_user_email - v1"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table user to user_v1 - v1"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create user table v2"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_user_login - v2"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_user_email - v2"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="copy data_source v1 to v2"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table user_v1"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="Add column help_flags1 to user table"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update user table charset"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="Add last_seen_at column to user"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create temp user table v1-7"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_email - v1-7"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_org_id - v1-7"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_code - v1-7"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_temp_user_status - v1-7"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="Update temp_user table charset"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create star table"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index star.user_id_dashboard_id"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create org table v1"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_org_name - v1"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create org_user table v1"
+t=2018-04-02T07:15:38+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_org_user_org_id - v1"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_org_user_org_id_user_id - v1"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="copy data account to org"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Skipping migration condition not fulfilled" logger=migrator id="copy data account to org"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="copy data account_user to org_user"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Skipping migration condition not fulfilled" logger=migrator id="copy data account_user to org_user"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table account"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table account_user"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Update org table charset"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Update org_user table charset"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Migrate all Read Only Viewers to Viewers"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard table"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="add index dashboard.account_id"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_account_id_slug"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_tag table"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_tag.dasboard_id_term"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_dashboard_tag_dashboard_id_term - v1"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table dashboard to dashboard_v1 - v1"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard v2"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_dashboard_org_id - v2"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_org_id_slug - v2"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="copy dashboard v1 to v2"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="drop table dashboard_v1"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard.data to mediumtext v1"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column updated_by in dashboard - v2"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column created_by in dashboard - v2"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column gnetId in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for gnetId in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column plugin_id in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for plugin_id in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add index for dashboard_id in dashboard_tag"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard table charset"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard_tag table charset"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column folder_id in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column isFolder in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column has_acl in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add column uid in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Update uid column values in dashboard"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add unique index dashboard_org_id_uid"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Remove unique index org_id_slug"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard title length"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Add unique index for dashboard_org_id_title_folder_id"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_provisioning"
+t=2018-04-02T07:15:39+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table dashboard_provisioning to dashboard_provisioning_tmp_qwerty - v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_provisioning v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_dashboard_provisioning_dashboard_id - v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_dashboard_provisioning_dashboard_id_name - v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="copy dashboard_provisioning v1 to v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="drop dashboard_provisioning_tmp_qwerty"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create data_source table"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="add index data_source.account_id"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index data_source.account_id_name"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="drop index IDX_data_source_account_id - v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_data_source_account_id_name - v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table data_source to data_source_v1 - v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create data_source table v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_data_source_org_id - v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_data_source_org_id_name - v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="copy data_source v1 to v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table data_source_v1 #2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Add column with_credentials"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Add secure json data column"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Update data_source table charset"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Update initial version to 1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Add read_only data column"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create api_key table"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.account_id"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.key"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="add index api_key.account_id_name"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="drop index IDX_api_key_account_id - v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_api_key_key - v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="drop index UQE_api_key_account_id_name - v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table api_key to api_key_v1 - v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create api_key table v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_api_key_org_id - v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_api_key_key - v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_api_key_org_id_name - v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="copy api_key v1 to v2"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table api_key_v1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="Update api_key table charset"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_snapshot table v4"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="drop table dashboard_snapshot_v4 #1"
+t=2018-04-02T07:15:40+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_snapshot table v5 #2"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_snapshot_key - v5"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_dashboard_snapshot_delete_key - v5"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_dashboard_snapshot_user_id - v5"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard_snapshot to mediumtext v2"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Update dashboard_snapshot table charset"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create quota table v1"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_quota_org_id_user_id_target - v1"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Update quota table charset"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create plugin_setting table"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create index UQE_plugin_setting_org_id_plugin_id - v1"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Add column plugin_version to plugin_settings"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Update plugin_setting table charset"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create session table"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table playlist table"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old table playlist_item table"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create playlist table v2"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create playlist item table v2"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Update playlist table charset"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Update playlist_item table charset"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="drop preferences table v2"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="drop preferences table v3"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create preferences table v3"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Update preferences table charset"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create alert table v1"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert org_id & id "
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert state"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert dashboard_id"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create alert_notification table v1"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Add column is_default"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index alert_notification org_id & name"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Update alert table charset"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Update alert_notification table charset"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="Drop old annotation table v4"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="create annotation table v5"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 0 v3"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 1 v3"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 2 v3"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 3 v3"
+t=2018-04-02T07:15:41+0000 lvl=info msg="Executing migration" logger=migrator id="add index annotation 4 v3"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Update annotation table charset"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Add column region_id to annotation table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Drop category_id index"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Add column tags to annotation table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Create annotation_tag table v2"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Add unique index annotation_tag.annotation_id_tag_id"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Update alert annotations and set TEXT to empty"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create test_data table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard_version table v1"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add index dashboard_version.dashboard_id"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_version.dashboard_id and dashboard_version.version"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Set dashboard version to 1 where 0"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="save existing dashboard data in dashboard_version table v1"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="alter dashboard_version.data to mediumtext v1"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create team table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add index team.org_id"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index team_org_id_name"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create team member table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add index team_member.org_id"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index team_member_org_id_team_id_user_id"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Add column email to team table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create dashboard acl table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add index dashboard_acl_dashboard_id"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_acl_dashboard_id_user_id"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add unique index dashboard_acl_dashboard_id_team_id"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="save default acl rules in dashboard_acl table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create tag table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add index tag.key_value"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create login attempt table"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="add index login_attempt.username"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="drop index IDX_login_attempt_username - v1"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="Rename table login_attempt to login_attempt_tmp_qwerty - v1"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create login_attempt v2"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="create index IDX_login_attempt_username - v2"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="copy login_attempt v1 to v2"
+t=2018-04-02T07:15:42+0000 lvl=info msg="Executing migration" logger=migrator id="drop login_attempt_tmp_qwerty"
+t=2018-04-02T07:15:43+0000 lvl=info msg="Created default admin user: admin"
+t=2018-04-02T07:15:43+0000 lvl=info msg="Starting plugin search" logger=plugins
+t=2018-04-02T07:15:43+0000 lvl=info msg="Plugin dir created" logger=plugins dir=/var/lib/grafana/plugins
+t=2018-04-02T07:15:43+0000 lvl=info msg="Initializing Alerting" logger=alerting.engine
+t=2018-04-02T07:15:43+0000 lvl=info msg="Initializing CleanUpService" logger=cleanup
+t=2018-04-02T07:15:43+0000 lvl=info msg="Initializing Stream Manager"
+t=2018-04-02T07:15:43+0000 lvl=info msg="Initializing HTTP Server" logger=http.server address=0.0.0.0:3000 protocol=http subUrl= socket=
+```
+
+```
+[root@nuc kubernetes-via-kubeadm]# kubectl create -f grafana-service.yaml -n prometheus 
+service "grafana" created
+
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus get services
+NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+grafana         NodePort   10.97.80.248     <none>        3000:30002/TCP   34s
+node-exporter   NodePort   10.105.153.131   <none>        9100:30001/TCP   41m
+prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
+```
   
 ## Tear down the cluster 
 Perform these steps to desolve the cluster completly.  
