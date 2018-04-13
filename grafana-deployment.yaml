@@ -1,10 +1,14 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
+  namespace: prometheus
   labels:
     app: grafana
 spec:
+  selector:
+    matchLabels:
+      app: grafana
   replicas: 1
   template:
     metadata:
@@ -15,18 +19,43 @@ spec:
         - image: grafana/grafana:latest
           name: grafana
           env:
-              # service using a LoadBalancer or a public IP.
             - name: GF_AUTH_BASIC_ENABLED
               value: "false"
             - name: GF_AUTH_ANONYMOUS_ENABLED
               value: "true"
             - name: GF_AUTH_ANONYMOUS_ORG_ROLE
               value: admin
+            - name: GF_SECURITY_ADMIN_USER
+              value: admin
             - name: GF_SECURITY_ADMIN_PASSWORD
               value: admin
           volumeMounts:
-          - name: grafana-persistent-storage
-            mountPath: /var
+            - name: grafana-persistent-storage
+              mountPath: /var
+            - name: grafana-ini-configmap-volume
+              mountPath: /etc/grafana
+            - name: grafana-dashboard-directory-configmap-volume
+              mountPath: /var/lib/grafana/provisioning/dashboards
+            - name: grafana-dashboard-json-configmap-volume
+              mountPath: /var/lib/grafana/dashboards
+            - name: grafana-datasource-configmap-volume
+              mountPath: /var/lib/grafana/provisioning/datasources
       volumes:
-      - name: grafana-persistent-storage
-        emptyDir: {}
+        - name: grafana-ini-configmap-volume
+          configMap:
+            defaultMode: 0666
+            name: grafana-ini
+        - name: grafana-dashboard-directory-configmap-volume
+          configMap:
+            defaultMode: 0666
+            name: grafana-dashboard-directory
+        - name: grafana-dashboard-json-configmap-volume
+          configMap:
+            defaultMode: 0666
+            name: grafana-dashboard-json
+        - name: grafana-datasource-configmap-volume
+          configMap:
+            defaultMode: 0666
+            name: grafana-datasource
+        - name: grafana-persistent-storage
+          emptyDir: {}
