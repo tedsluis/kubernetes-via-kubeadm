@@ -41,7 +41,7 @@ Since we have only one host that we use as `master` and `node` we apply both com
 On the master(s):  
 ```
 [root@nuc ~]# for PORT in 6443 2379 2380 10250 10251 10252 10255; do \
-	firewall-cmd --permanent --add-port=${PORT}/tcp --permanent \
+	firewall-cmd --permanent --add-port=${PORT}/tcp --permanent; \
 done
 [root@nuc ~]# firewall-cmd --reload
 [root@nuc ~]# firewall-cmd --list-ports
@@ -49,7 +49,7 @@ done
 On the node(s): 
 ```
 [root@nuc ~]# for PORT in 53 10250 10255 30000-32767; do \
-	firewall-cmd --permanent --add-port=${PORT}/tcp --permanent \
+	firewall-cmd --permanent --add-port=${PORT}/tcp --permanent; \
 done
 [root@nuc ~]# firewall-cmd --reload
 [root@nuc ~]# firewall-cmd --list-ports
@@ -574,7 +574,16 @@ kubernetes-dashboard   NodePort    10.100.227.126   <none>        443:30120/TCP 
 monitoring-grafana     ClusterIP   10.102.178.122   <none>        80/TCP          10m
 monitoring-influxdb    ClusterIP   10.103.66.221    <none>        8086/TCP        12m
 ```
-In this case the Dashboard is exposed on port 30120 (HTTPS). It is accessible from a web browser at: https://nuc.bachstraat20:30120  
+So in this case the Dashboard is exposed on port 30120 (HTTPS).   
+  
+### Get cluster IP 
+```
+[root@nuc kubernetes-via-kubeadm]# export CLUSTERIP=$(kubectl config view | grep server | sed 's/^.*server:[ ]https:\/\/\(.*\):6443$/\1/')
+[root@nuc kubernetes-via-kubeadm]# echo $CLUSTERIP
+```
+  
+### Access the kubernetes dashboard
+The dashboard is now accessible from a web browser at: https://YOUR-CLUSTER-IP:30120  
 Continue below to create credentieels to login to the kubernetes-dashboard.
   
 ### Clone this repo
@@ -693,6 +702,18 @@ Now you should be able to use the Prometheus GUI via this URL: https://nuc.bachs
 [![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)
    
 ## Grafana
+  
+###
+```
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-dashboard-directory --from-file=grafana-dashboard-directory.yaml
+configmap "grafana-dashboard-directory" created
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-dashboard-json --from-file=grafana-dashboard.json
+configmap "grafana-dashboard-json" created
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-datasource --from-file=grafana-datasource.yaml
+configmap "grafana-datasource" created
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-ini --from-file=grafana.ini
+configmap "grafana-ini" created
+```
 
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl create -f grafana-deployment.yaml -n prometheus 
