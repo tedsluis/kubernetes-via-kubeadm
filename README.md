@@ -997,6 +997,7 @@ Perform this on all nodes:
 ```
 [root@nuc ~]# sysctl net.bridge.bridge-nf-call-iptables=0
 net.bridge.bridge-nf-call-iptables = 0
+```
   
 ### Close firewall ports for Kubernetes. 
 Before closing the kuvernetes ports in the firewall, lets take a look at the `port list` we had saved before we opened ports:  
