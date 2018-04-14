@@ -1,5 +1,7 @@
 # kubernetes-via-kubeadm
-How to deploy a Kubernetes master and node on a single Fedora host via kubeadm.    
+How to deploy a Kubernetes cluster, single or multi nodes, with Kubernetes dashboard, Prometheus and Grafana.
+  
+
   
 By default it is not possible (and not recommanded) to run applications on `master` node(s). In case you have only one host you could deploy a Kubernetes cluster on one host via `kubeadm`. Basicly this means that all the components needs to be installed on the same host and that the `master` should be configured `schedulable`.  
 Down here you find the steps to configure a Fedora hosts as a single cluster hosts.  
@@ -30,15 +32,24 @@ Apr 01 15:38:39 nuc.bachstraat20 systemd[1]: Stopped Kubernetes Kubelet Server.
 Notice that the `kubelet.service` logging is reporting errors! Don't worry. This is because it is not yet configuered.  
   
 ### Disable selinux 
-`SELINUX` is not yet support with `kubeadm`, so it must be turned off!  
+`SELINUX` is not yet support with `kubeadm` yet, so it must be turned off!  
 ```
 [root@nuc ~]# setenforce 0
-[root@nuc ~]# vi /etc/sysconfig/selinux  (SELINUX=disabled)
+[root@nuc ~]# sed -i 's/^SELINUX=.*$/SELINUX=disabled/' /etc/sysconfig/selinux
 ```
+If you have multiple nodes, don't forget to apply these settings on all of them.  
   
 ### Open firewall ports for Kubernetes. 
 Since we have only one host that we use as `master` and `node` we apply both commands to our host.  
-On the master(s):  
+  
+Before open new ports in the firewall, lets save the current `port list` into a file for later:
+```
+[root@nuc ~]# firewall-cmd --list-ports | tee ${HOSTNAME}.ports
+1025-65535/udp 1025-65535/tcp 80/tcp 443/tcp 
+```
+Do this on all your nodes!  
+  
+Now open the following ports on the master node:   
 ```
 [root@nuc ~]# for PORT in 6443 2379 2380 10250 10251 10252 10255; do \
 	firewall-cmd --permanent --add-port=${PORT}/tcp --permanent; \
@@ -46,9 +57,11 @@ done
 [root@nuc ~]# firewall-cmd --reload
 [root@nuc ~]# firewall-cmd --list-ports
 ```  
-On the node(s): 
+  
+Open the following ports on the worker node(s).  
+If you have a node that will be acting as a `master` and as a `worker node`, then apply these also on that node.  
 ```
-[root@nuc ~]# for PORT in 53 10250 10255 30000-32767; do \
+[root@nuc ~]# for PORT in 53 8053 10250 10255 30000-32767; do \
 	firewall-cmd --permanent --add-port=${PORT}/tcp --permanent; \
 done
 [root@nuc ~]# firewall-cmd --reload
@@ -58,7 +71,7 @@ done
 ### Disable swapping: 
 ```
 [root@nuc ~]# swapoff -a
-[root@nuc ~]# sed -i 's/\(^.*swap.*$\)/\#\1/g' /etc/fstab
+[root@nuc ~]# sed -i 's/\(^.*swap.*$\)/\#DISABLE:\1/g' /etc/fstab
 ```
 Swapping is not supported by `kubelet`.
   
@@ -949,7 +962,10 @@ Now you should be able to use the Grafana Dashboard via this URL: https://nuc.ba
 [![Grafana Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)
      
 ## Tear down the cluster 
-Perform these steps to desolve the cluster completly.  
+Perform these steps to desolve the cluster completly and revert all changes.    
+  
+### Remove the Kubernetes cluster
+Perform this to remove the cluster:   
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl drain nuc.bachstraat20 --delete-local-data --force --ignore-daemonsets
 node "nuc.bachstraat20" cordoned
@@ -967,7 +983,63 @@ node "nuc.bachstraat20" deleted
 [reset] Deleting contents of config directories: [/etc/kubernetes/manifests /etc/kubernetes/pki]
 [reset] Deleting files: [/etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
 ```
-Now you will be able to start al over from the top.  
+Now you are able to start all over again at step `Bootstrap the cluster`.  
+   
+### Enable Swapping
+Perform this on all nodes:  
+```
+[root@nuc ~]# sed -i 's/^\#DISABLE:\(.*swap.*$\)/\1/g' /etc/fstab
+[root@nuc ~]# swapon -a
+```
+  
+### net.bridge.bridge-nf-call-iptables set back to 0
+Perform this on all nodes:  
+```
+[root@nuc ~]# sysctl net.bridge.bridge-nf-call-iptables=0
+net.bridge.bridge-nf-call-iptables = 0
+  
+### Close firewall ports for Kubernetes. 
+Before closing the kuvernetes ports in the firewall, lets take a look at the `port list` we had saved before we opened ports:  
+```
+[root@nuc ~]# cat ${HOSTNAME}.ports
+1025-65535/udp 1025-65535/tcp 80/tcp 443/tcp
+```
+Do this on all your nodes!
+
+Now close the following ports on the master node, but leave out ports that were `open` before:
+```
+[root@nuc ~]# for PORT in 6443 2379 2380 10250 10251 10252 10255; do \
+        firewall-cmd --permanent --remove-port=${PORT}/tcp --permanent; \
+done
+[root@nuc ~]# firewall-cmd --reload
+[root@nuc ~]# firewall-cmd --list-ports
+```
+
+Close the following ports on the worker node(s), but leave out ports that were `open` before.
+If you have a node that was be acting as a `master` and as a `worker node`, then apply these also on that node.
+```
+[root@nuc ~]# for PORT in 53 8053 10250 10255 30000-32767; do \
+        firewall-cmd --permanent --remove-port=${PORT}/tcp --permanent; \
+done
+[root@nuc ~]# firewall-cmd --reload
+[root@nuc ~]# firewall-cmd --list-ports
+```
+    
+### Enable SELINUX
+Perform this on all nodes:  
+```
+[root@nuc ~]# setenforce 1
+[root@nuc ~]# sed -i 's/^SELINUX=.*$/SELINUX=enabled/' /etc/sysconfig/selinux
+```
+
+### Remove the kubeadm, kubectl and kubelet packages  
+Perform this on all nodes:  
+```
+[root@nuc ~]# systemctl disable kubelet && systemctl start kubelet
+[root@nuc ~]# dnf remove kubernetes-kubeadm kubernetes kubernetes-client
+```
+  
+Now you will be able to start all over from the top.  
   
 ## Documentation  
 * [Using kubeadm to Create a Cluster](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/)  
