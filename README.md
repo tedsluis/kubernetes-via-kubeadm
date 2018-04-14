@@ -293,16 +293,14 @@ Events:
 The node looks `okay`, but since it is a master, it reports `Taints: node-role.kubernetes.io/master:NoSchedule`. So it can't schedule any pods.  
    
 ### Make master node being able to schedule pods
-By default it is not possible (and not very wise) to schedule pods on the master hosts, but if you just have only one host, you can make it `schedulable`.  
-Remove `taints`, `effect:NoSchedule` and `key: node-role.kubernetes.io/master` from master node config.
+By default, your cluster will not schedule pods on a master node for security reasons. If you want to be able to schedule pods on the master, e.g. for a single-machine Kubernetes cluster for development, run:
 ```
-[root@nuc ~]# kubectl edit node nuc.bachstraat20
-spec:
-  taints:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
+[root@nuc ~]# kubectl taint nodes --all node-role.kubernetes.io/master-
+node "nuc" untainted
+taint key="dedicated" and effect="" not found.
+taint key="dedicated" and effect="" not found.
 ```
-Now the host is ready to schedule pods:  
+Now the master node is ready to schedule pods:  
 ```
 [root@nuc ~]# kubectl get nodes -o wide
 NAME               STATUS    ROLES     AGE       VERSION   EXTERNAL-IP   OS-IMAGE                          KERNEL-VERSION            CONTAINER-RUNTIME
@@ -311,7 +309,7 @@ nuc.bachstraat20   Ready     master    17m       v1.9.1    <none>        Fedora 
 The cluster is ready to schedule pods. Continue with deploying the Kubernetes Dashboard...  
   
 ## Install Kubernetes Dashboard  
-The `dashboard` itself is a single deployment, but in order to view pod metrics `heapster`, `influxdb` and `grafana` needs to be deployed.  
+The `dashboard` itself is a single deployment, but in order to view pod metrics, `heapster`, `influxdb` and `grafana` needs to be deployed too.  
   
 ### InfluxDB
 ```
@@ -589,15 +587,17 @@ monitoring-influxdb    ClusterIP   10.103.66.221    <none>        8086/TCP      
 ```
 So in this case the Dashboard is exposed on port 30120 (HTTPS).   
   
-### Get cluster IP 
+### Get Node name(s) and IP(s)
+All services running on the cluster that are exposed via a `node-port` are exposed on all nodes that run `kube-proxy`.  
+So if you want to connect to a service you need to know a `node ip` or `node name`:
 ```
-[root@nuc kubernetes-via-kubeadm]# export CLUSTERIP=$(kubectl config view | grep server | sed 's/^.*server:[ ]https:\/\/\(.*\):6443$/\1/')
-[root@nuc kubernetes-via-kubeadm]# echo $CLUSTERIP
+[root@nuc ~]# kubectl get pods -n kube-system -o wide | grep kube-proxy | awk '{print $6 "   " $7}'
+192.168.11.100   nuc.bachstraat20
 ```
   
 ### Access the kubernetes dashboard
-The dashboard is now accessible from a web browser at: https://YOUR-CLUSTER-IP:30120  
-Continue below to create credentieels to login to the kubernetes-dashboard.
+The dashboard is now accessible from a web browser via a `node-name` or `node-ip` and it port: https://NODE-IP:30120  
+Continue below to create credentieels to login to the kubernetes-dashboard. 
   
 ### Clone this repo
 For some of the following steps you need some `manifest` files form this repo. Therefor it is useful to clone this repo on your Kubernetes master node:  
@@ -621,7 +621,7 @@ To get the token for this `admin-user`:
 [root@nuc kubernetes-via-kubeadm]# kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep ^token: | sed 's/token:[ ]*//'
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLW1oNzIyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIwNWM0ZDZmZC0yZjYyLTExZTgtYTMxNi1jMDNmZDU2MmJiNzciLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.butKxegADx3JQvKpn9Prf7RL_SoxaEyi_scYOvXurm4BAwEj8zfC9a7djqQ9mBtd5cQHlljvMb-3qFc6UPOzAwR8fc5khk-nAkH-5XeahpT8WsyxMcKxqLuyAg8gh4ZtMKvBPk9kOWDtyRBzAeGkisbLxr43ecKO71F5G8D7HR2UGSm-x4Pvhq0uqj8GyIcHw902Ti92BPuBRf-SyTl8uDCQJSDkS5Tru5w0p82borNuVXd1mmDwuI87ApQrqXTY9rbJ61m8iTr0kKJBqw5bHAUAhxwAVtVEKQNNKT6cxWp1FlhHbNkM9bhcj1qj8bN1QCMjPWlWKj7NkPbbBAJthQ
 ``` 
-You can use the token to login to the kubernetes-dashboard, https://nuc.bachstraat20:30120:   
+You can use the token to login to the kubernetes-dashboard, https://NODE-IP:30120   
   
 [![Kubernetes Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)
   
@@ -710,7 +710,7 @@ node-exporter   NodePort   10.105.153.131   <none>        9100:30001/TCP   41m
 prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 ```
   
-Now you should be able to use the Prometheus GUI via this URL: https://nuc.bachstraat20:30000:  
+Now you should be able to use the Prometheus GUI from the webbrowser via a `node-ip` or `node-name` and its port: https://NODE-IP:30000  
   
 [![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)
    
@@ -957,7 +957,7 @@ node-exporter   NodePort   10.105.153.131   <none>        9100:30001/TCP   41m
 prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 ```
   
-Now you should be able to use the Grafana Dashboard via this URL: https://nuc.bachstraat20:30002 (user name = admin, password = admin):  
+Now you should be able to use the Grafana Dashboard from a webbrowser via a `node-ip` or a `node-name` and its port: https://NODE-IP:30002 (user name = admin, password = admin):  
   
 [![Grafana Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)
      
@@ -985,22 +985,22 @@ node "nuc.bachstraat20" deleted
 ```
 Now you are able to start all over again at step `Bootstrap the cluster`.  
    
-### Enable Swapping
+### Enable Swapping backup on
 Perform this on all nodes:  
 ```
 [root@nuc ~]# sed -i 's/^\#DISABLE:\(.*swap.*$\)/\1/g' /etc/fstab
 [root@nuc ~]# swapon -a
 ```
   
-### net.bridge.bridge-nf-call-iptables set back to 0
+### Set net.bridge.bridge-nf-call-iptables back to 0
 Perform this on all nodes:  
 ```
 [root@nuc ~]# sysctl net.bridge.bridge-nf-call-iptables=0
 net.bridge.bridge-nf-call-iptables = 0
 ```
   
-### Close firewall ports for Kubernetes. 
-Before closing the kuvernetes ports in the firewall, lets take a look at the `port list` we had saved before we opened ports:  
+### Close Kubernetes related firewall ports 
+Before closing the kubernetes ports in the firewall, lets take a look at the `port list` we had saved before we opened ports:  
 ```
 [root@nuc ~]# cat ${HOSTNAME}.ports
 1025-65535/udp 1025-65535/tcp 80/tcp 443/tcp
@@ -1026,7 +1026,7 @@ done
 [root@nuc ~]# firewall-cmd --list-ports
 ```
     
-### Enable SELINUX
+### Enable SELINUX back on
 Perform this on all nodes:  
 ```
 [root@nuc ~]# setenforce 1
@@ -1040,7 +1040,7 @@ Perform this on all nodes:
 [root@nuc ~]# dnf remove kubernetes-kubeadm kubernetes kubernetes-client
 ```
   
-Now you will be able to start all over from the top.  
+Now you have entirely reverted all changes.  
   
 ## Documentation  
 * [Using kubeadm to Create a Cluster](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/)  
