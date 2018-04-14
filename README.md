@@ -7,15 +7,21 @@ By default it is not possible (and not recommanded) to run applications on `mast
 Down here you find the steps to configure a Fedora hosts as a single cluster hosts.  
   
 ## Prerequisites 
-One host with:   
+One or more hosts with:   
 * Fedora 27 (or higher) installed 
 * Docker 1.13 (or higher) installed  
   
 ## Deploy Kubernetes cluster via kubeadm
   
 ### Install the kubeadm, kubectl and kubelet packages  
+Start with install `kubeadm` on the master node:
 ```
-[root@nuc ~]# dnf install kubernetes-kubeadm kubernetes kubernetes-client
+[root@nuc ~]# dnf install kubernetes-kubeadm 
+```
+  
+Continue with installing these packages on all your nodes:  
+```
+[root@nuc ~]# dnf install kubernetes kubernetes-client
 
 [root@nuc ~]# systemctl enable kubelet && systemctl start kubelet
 
@@ -68,21 +74,23 @@ done
 [root@nuc ~]# firewall-cmd --list-ports
 ``` 
    
-### Disable swapping: 
+### Disable swapping:
+Swapping is not supported by `kubelet`.
 ```
 [root@nuc ~]# swapoff -a
 [root@nuc ~]# sed -i 's/\(^.*swap.*$\)/\#DISABLE:\1/g' /etc/fstab
 ```
-Swapping is not supported by `kubelet`.
-  
+Apply this on all the node.  
+    
 ### net.bridge.bridge-nf-call-iptables needs to be set to 1
 ```
 [root@nuc ~]# sysctl net.bridge.bridge-nf-call-iptables=1
 net.bridge.bridge-nf-call-iptables = 1
 ```
+Apply this on all the node.  
   
 ### Bootstrap the cluster  
-I choose to use `flannel` as network layer. This means kubeadm needs to know a network CIDR: `--pod-network-cidr=10.244.0.0/16`
+I choose to use `flannel` as network layer. This means `kubeadm` needs to know a network CIDR: `--pod-network-cidr=10.244.0.0/16`
 ```
 [root@nuc ~]# kubeadm init --pod-network-cidr=10.244.0.0/16
 [init] Using Kubernetes version: v1.9.6
@@ -587,20 +595,20 @@ monitoring-influxdb    ClusterIP   10.103.66.221    <none>        8086/TCP      
 ```
 So in this case the Dashboard is exposed on port 30120 (HTTPS).   
   
-### Get Node name(s) and IP(s)
+### Get Node(s) name and IP
 All services running on the cluster that are exposed via a `node-port` are exposed on all nodes that run `kube-proxy`.  
-So if you want to connect to a service you need to know a `node ip` or `node name`:
+So if you want to connect to a service you need to know a `node ip's` or `node names`:
 ```
 [root@nuc ~]# kubectl get pods -n kube-system -o wide | grep kube-proxy | awk '{print $6 "   " $7}'
 192.168.11.100   nuc.bachstraat20
 ```
   
 ### Access the kubernetes dashboard
-The dashboard is now accessible from a web browser via a `node-name` or `node-ip` and it port: https://NODE-IP:30120  
+The dashboard is now accessible from a web browser via a `node-name` or `node-ip` and its port: https://NODE-IP:30120  
 Continue below to create credentieels to login to the kubernetes-dashboard. 
   
 ### Clone this repo
-For some of the following steps you need some `manifest` files form this repo. Therefor it is useful to clone this repo on your Kubernetes master node:  
+For some of the following steps you need some `manifest` files form this repo. Therefor it is useful to clone this repo on your Kubernetes master node (or the node where you run `kubectl`):  
 ```
 [root@nuc ~]# git clone https://github.com/tedsluis/kubernetes-via-kubeadm.git
 
