@@ -1,20 +1,56 @@
 # kubernetes-via-kubeadm
-How to deploy a Kubernetes cluster, single or multi nodes, with Kubernetes dashboard, Prometheus and Grafana.
+How to deploy a Kubernetes cluster, on one or more hosts, including the Kubernetes dashboard, Prometheus and Grafana.  
   
+This step by step instruction tells you how to install a Kubernetes cluster for development. All you need is just one (or more) `Fedora` hosts running `Docker`.  
+  
+Table of Contents
+=================
 
+   * [kubernetes-via-kubeadm](#kubernetes-via-kubeadm)
+      * [Deploy Kubernetes cluster via kubeadm](#deploy-kubernetes-cluster-via-kubeadm)
+         * [Prerequisites](#prerequisites)
+         * [Install the kubeadm, kubectl and kubelet packages](#install-the-kubeadm-kubectl-and-kubelet-packages)
+         * [Disable selinux](#disable-selinux)
+         * [Open firewall ports for Kubernetes.](#open-firewall-ports-for-kubernetes)
+         * [Disable swapping:](#disable-swapping)
+         * [net.bridge.bridge-nf-call-iptables needs to be set to 1](#netbridgebridge-nf-call-iptables-needs-to-be-set-to-1)
+         * [Bootstrap the cluster](#bootstrap-the-cluster)
+         * [Make sure kubectl works](#make-sure-kubectl-works)
+         * [Deploy a pod network](#deploy-a-pod-network)
+         * [Check the node](#check-the-node)
+         * [Make master node being able to schedule pods](#make-master-node-being-able-to-schedule-pods)
+      * [Install Kubernetes Dashboard](#install-kubernetes-dashboard)
+         * [InfluxDB](#influxdb)
+         * [Grafana](#grafana)
+         * [Heapster](#heapster)
+         * [Heapster RBAC](#heapster-rbac)
+         * [Kubernetes dashboard](#kubernetes-dashboard)
+         * [Get Node(s) name and IP](#get-nodes-name-and-ip)
+         * [Access the kubernetes dashboard](#access-the-kubernetes-dashboard)
+         * [Clone this repo](#clone-this-repo)
+         * [Create an admin user](#create-an-admin-user)
+      * [Deploying Prometheus](#deploying-prometheus)
+      * [Grafana](#grafana-1)
+      * [Tear down the cluster](#tear-down-the-cluster)
+         * [Remove the Kubernetes cluster](#remove-the-kubernetes-cluster)
+         * [Enable Swapping backup on](#enable-swapping-backup-on)
+         * [Set net.bridge.bridge-nf-call-iptables back to 0](#set-netbridgebridge-nf-call-iptables-back-to-0)
+         * [Close Kubernetes related firewall ports](#close-kubernetes-related-firewall-ports)
+         * [Enable SELINUX back on](#enable-selinux-back-on)
+         * [Remove the kubeadm, kubectl and kubelet packages](#remove-the-kubeadm-kubectl-and-kubelet-packages)
+      * [Documentation](#documentation)
   
-By default it is not possible (and not recommanded) to run applications on `master` node(s). In case you have only one host you could deploy a Kubernetes cluster on one host via `kubeadm`. Basicly this means that all the components needs to be installed on the same host and that the `master` should be configured `schedulable`.  
-Down here you find the steps to configure a Fedora hosts as a single cluster hosts.  
+## Deploy Kubernetes cluster via kubeadm
   
-## Prerequisites 
+### Prerequisites 
+By default you can't (and not recommanded for production workloads) run applications on a Kubernetes `master` node. However, in case you want to setup a development Kubernetes cluster with just one or two hosts you can configure the master to `schedule` pods.  
+  
 One or more hosts with:   
 * Fedora 27 (or higher) installed 
 * Docker 1.13 (or higher) installed  
   
-## Deploy Kubernetes cluster via kubeadm
-  
 ### Install the kubeadm, kubectl and kubelet packages  
-Start with install `kubeadm` on the master node:
+Start with installing `kubeadm` on the master node:
 ```
 [root@nuc ~]# dnf install kubernetes-kubeadm 
 ```
@@ -633,8 +669,8 @@ You can use the token to login to the kubernetes-dashboard, https://NODE-IP:3012
   
 [![Kubernetes Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)
   
-## Deploying Prometheus with grafana
-
+## Deploying Prometheus  
+  
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl create namespace prometheus
 namespace "prometheus" created
