@@ -665,12 +665,28 @@ To get the token for this `admin-user`:
 [root@nuc kubernetes-via-kubeadm]# kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}') | grep ^token: | sed 's/token:[ ]*//'
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLW1oNzIyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIwNWM0ZDZmZC0yZjYyLTExZTgtYTMxNi1jMDNmZDU2MmJiNzciLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.butKxegADx3JQvKpn9Prf7RL_SoxaEyi_scYOvXurm4BAwEj8zfC9a7djqQ9mBtd5cQHlljvMb-3qFc6UPOzAwR8fc5khk-nAkH-5XeahpT8WsyxMcKxqLuyAg8gh4ZtMKvBPk9kOWDtyRBzAeGkisbLxr43ecKO71F5G8D7HR2UGSm-x4Pvhq0uqj8GyIcHw902Ti92BPuBRf-SyTl8uDCQJSDkS5Tru5w0p82borNuVXd1mmDwuI87ApQrqXTY9rbJ61m8iTr0kKJBqw5bHAUAhxwAVtVEKQNNKT6cxWp1FlhHbNkM9bhcj1qj8bN1QCMjPWlWKj7NkPbbBAJthQ
 ``` 
+  
+### Accessing the Kubernetes Dashboard 
 You can use the token to login to the kubernetes-dashboard, https://NODE-IP:30120   
   
 [![Kubernetes Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)
   
 ## Deploying Prometheus  
+
+### Scrape jobs
+Prometheus scrapes metrics from various end-points. One of the end-point is `node-exporter`, which also needs to be deployed.  
+The following scrape jobs are configured: 
   
+| Scrape job            | End-point                     |
+|-----------------------|-------------------------------|
+| kubernetes-apiservers | https://API-NODE:6443/metrics |
+| kubernetes-nodes      | http://NODE-IP:10255/metrics  |
+| kubernetes-cadvisor   | http://NODE-IP:4194/metrics   |
+| node-exporters        | http://NODE-IP:9100/metrics   |
+   
+Of cource you can add more scrape jobs to scrape for e.g. application end-points.  
+  
+### Create namespace, serviceaccount and clusterrolebinding for Prometheus 
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl create namespace prometheus
 namespace "prometheus" created
@@ -680,10 +696,22 @@ serviceaccount "prometheus" created
 
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f prometheus-sa-clusterrolebinding.yaml
 clusterrolebinding "prometheus" created
-
+```
+  
+### Create configmap for Prometheus config file
+```
 [root@nuc kubernetes-via-kubeadm]# kubectl create -f prometheus-config.yaml -n prometheus
 configmap "prometheus-config" created
-
+```
+Note: If you later on want to make changes to Prometheus, just edit this configmap:
+```
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus edit configmap prometheus-config
+```
+Changes will be active after you restart Prometheus (just delete the pod).  
+  
+### Deploy Prometheus  
+Now you're ready to deploy Prometheus and its service:  
+```
 [root@nuc kubernetes-via-kubeadm]# kubectl create -f prometheus-deployment.yaml -n prometheus
 deployment "prometheus" created
 
@@ -708,7 +736,11 @@ level=info ts=2018-04-01T16:11:15.950194674Z caller=main.go:491 msg="Server is r
 
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f prometheus-service.yaml 
 service "prometheus" created
-
+```
+  
+### Deploy node-exporter
+Now you can deploy node-exporter and its service:  
+```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f node-exporter-deployment.yaml
 
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus logs node-exporter-w8spt 
@@ -747,17 +779,23 @@ time="2018-04-01T16:14:54Z" level=info msg="Listening on :9100" source="node_exp
 
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create -f node-exporter-service.yaml 
 service "node-exporter" created
-
+```
+### Check the Prometheus and node-exporter services
+```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus get services
 NAME            TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
 node-exporter   NodePort   10.105.153.131   <none>        9100:30001/TCP   41m
 prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 ```
   
+### Access the Prometheus GUI  
 Now you should be able to use the Prometheus GUI from the webbrowser via a `node-ip` or `node-name` and its port: https://NODE-IP:30000  
   
 [![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)
    
+### Access the node-exporter GUI
+Now you should be able to use the node-exporter GUI from the webbrowser via a `node-ip` or `node-name` and its port: https://NODE-IP:30001
+  
 ## Grafana
   
 ###
