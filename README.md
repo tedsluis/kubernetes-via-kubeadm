@@ -2,11 +2,12 @@
 How to deploy a Kubernetes cluster, on one or more hosts, including the Kubernetes dashboard, Prometheus and Grafana.  
   
 This step by step instruction tells you how to install a Kubernetes cluster for development. All you need is just one (or more) `Fedora` hosts running `Docker`.  
-  
+ 
 Table of Contents
 =================
 
    * [kubernetes-via-kubeadm](#kubernetes-via-kubeadm)
+   * [Table of Contents](#table-of-contents)
       * [Deploy Kubernetes cluster via kubeadm](#deploy-kubernetes-cluster-via-kubeadm)
          * [Prerequisites](#prerequisites)
          * [Install the kubeadm, kubectl and kubelet packages](#install-the-kubeadm-kubectl-and-kubelet-packages)
@@ -29,8 +30,28 @@ Table of Contents
          * [Access the kubernetes dashboard](#access-the-kubernetes-dashboard)
          * [Clone this repo](#clone-this-repo)
          * [Create an admin user](#create-an-admin-user)
+         * [Login to the Kubernetes Dashboard](#login-to-the-kubernetes-dashboard)
+         * [Screenshots](#screenshots)
       * [Deploying Prometheus](#deploying-prometheus)
+         * [Scrape jobs](#scrape-jobs)
+         * [Create namespace, serviceaccount and clusterrolebinding for Prometheus](#create-namespace-serviceaccount-and-clusterrolebinding-for-prometheus)
+         * [Create configmap for Prometheus config file](#create-configmap-for-prometheus-config-file)
+         * [Deploy Prometheus](#deploy-prometheus)
+         * [Deploy node-exporter](#deploy-node-exporter)
+         * [Check the Prometheus and node-exporter services](#check-the-prometheus-and-node-exporter-services)
+         * [Access the Prometheus GUI](#access-the-prometheus-gui)
+         * [Screenshots Prometheus](#screenshots-prometheus)
+         * [Access the node-exporter GUI](#access-the-node-exporter-gui)
+         * [Screenshot node-exporter](#screenshot-node-exporter)
       * [Grafana](#grafana-1)
+         * [Create configmap for Grafana dashboard directory](#create-configmap-for-grafana-dashboard-directory)
+         * [Create configmap for Grafana dashboard](#create-configmap-for-grafana-dashboard)
+         * [Create configmap for Grafana datasource](#create-configmap-for-grafana-datasource)
+         * [Creat configmap for Grafana config file](#creat-configmap-for-grafana-config-file)
+         * [Deploy Grafana](#deploy-grafana)
+         * [Deploy the Grafana service](#deploy-the-grafana-service)
+         * [Access the Grafana GUI](#access-the-grafana-gui)
+         * [Screenshots Grafana](#screenshots-grafana)
       * [Tear down the cluster](#tear-down-the-cluster)
          * [Remove the Kubernetes cluster](#remove-the-kubernetes-cluster)
          * [Enable Swapping backup on](#enable-swapping-backup-on)
@@ -38,7 +59,7 @@ Table of Contents
          * [Close Kubernetes related firewall ports](#close-kubernetes-related-firewall-ports)
          * [Enable SELINUX back on](#enable-selinux-back-on)
          * [Remove the kubeadm, kubectl and kubelet packages](#remove-the-kubeadm-kubectl-and-kubelet-packages)
-      * [Documentation](#documentation)
+      * [Documentation](#documentation) 
   
 ## Deploy Kubernetes cluster via kubeadm
   
@@ -666,9 +687,10 @@ To get the token for this `admin-user`:
 eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJhZG1pbi11c2VyLXRva2VuLW1oNzIyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImFkbWluLXVzZXIiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC51aWQiOiIwNWM0ZDZmZC0yZjYyLTExZTgtYTMxNi1jMDNmZDU2MmJiNzciLCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6a3ViZS1zeXN0ZW06YWRtaW4tdXNlciJ9.butKxegADx3JQvKpn9Prf7RL_SoxaEyi_scYOvXurm4BAwEj8zfC9a7djqQ9mBtd5cQHlljvMb-3qFc6UPOzAwR8fc5khk-nAkH-5XeahpT8WsyxMcKxqLuyAg8gh4ZtMKvBPk9kOWDtyRBzAeGkisbLxr43ecKO71F5G8D7HR2UGSm-x4Pvhq0uqj8GyIcHw902Ti92BPuBRf-SyTl8uDCQJSDkS5Tru5w0p82borNuVXd1mmDwuI87ApQrqXTY9rbJ61m8iTr0kKJBqw5bHAUAhxwAVtVEKQNNKT6cxWp1FlhHbNkM9bhcj1qj8bN1QCMjPWlWKj7NkPbbBAJthQ
 ``` 
   
-### Accessing the Kubernetes Dashboard 
-You can use the token to login to the kubernetes-dashboard, https://NODE-IP:30120   
+### Login to the Kubernetes Dashboard 
+You can use the `token` to login to the kubernetes-dashboard, https://NODE-IP:30120   
   
+### Screenshots 
 [![Kubernetes Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)
   
 ## Deploying Prometheus  
@@ -791,25 +813,47 @@ prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 ### Access the Prometheus GUI  
 Now you should be able to use the Prometheus GUI from the webbrowser via a `node-ip` or `node-name` and its port: https://NODE-IP:30000  
   
+### Screenshots Prometheus
 [![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)
    
 ### Access the node-exporter GUI
 Now you should be able to use the node-exporter GUI from the webbrowser via a `node-ip` or `node-name` and its port: https://NODE-IP:30001
   
-## Grafana
+### Screenshot node-exporter
+[![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)
   
-###
+## Grafana
+Grafana will be deployed the same namespace as Prometheus.  
+  
+### Create configmap for Grafana dashboard directory
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-dashboard-directory --from-file=grafana-dashboard-directory.yaml
 configmap "grafana-dashboard-directory" created
+```
+This [grafana-dashboard-directory.yaml](grafana-dashboard-directory.yaml) will be mounted on `/var/lib/grafana/provisioning/dashboards` in the Grafana Deployment.  
+   
+### Create configmap for Grafana dashboard
+```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-dashboard-json --from-file=grafana-dashboard.json
 configmap "grafana-dashboard-json" created
+```
+This [grafana.ini](grafana.ini) will be mounted on `/var/lib/grafana/dashboards` in the Grafana Deployment.  
+   
+### Create configmap for Grafana datasource
+```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-datasource --from-file=grafana-datasource.yaml
 configmap "grafana-datasource" created
+```
+This [grafana-datasource.yaml](grafana-datasource.yaml) will be mounted on `/var/lib/grafana/provisioning/datasources` in the Grafana deployment.  
+   
+### Creat configmap for Grafana config file
+```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-ini --from-file=grafana.ini
 configmap "grafana-ini" created
 ```
-
+This [grafana.ini](grafana.ini) will be mounted on `/etc/grafana` in the Grafana deployment.
+   
+### Deploy Grafana
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl create -f grafana-deployment.yaml -n prometheus 
 deployment "grafana" created
@@ -1027,7 +1071,8 @@ t=2018-04-02T07:15:43+0000 lvl=info msg="Initializing CleanUpService" logger=cle
 t=2018-04-02T07:15:43+0000 lvl=info msg="Initializing Stream Manager"
 t=2018-04-02T07:15:43+0000 lvl=info msg="Initializing HTTP Server" logger=http.server address=0.0.0.0:3000 protocol=http subUrl= socket=
 ```
-
+ 
+### Deploy the Grafana service
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl create -f grafana-service.yaml -n prometheus 
 service "grafana" created
@@ -1039,8 +1084,10 @@ node-exporter   NodePort   10.105.153.131   <none>        9100:30001/TCP   41m
 prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 ```
   
+### Access the Grafana GUI
 Now you should be able to use the Grafana Dashboard from a webbrowser via a `node-ip` or a `node-name` and its port: https://NODE-IP:30002 (user name = admin, password = admin):  
   
+### Screenshots Grafana  
 [![Grafana Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)
      
 ## Tear down the cluster 
