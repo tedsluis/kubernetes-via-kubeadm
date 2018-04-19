@@ -19,7 +19,7 @@ datasources:
   orgId: 1
   # <string> url
   #url: http://prometheus.prometheus:9090
-  url: http://nuc:30000
+  url: http://NODE-IP:30000
   # <string> database password, if used
   #password:
   # <string> database user, if used
