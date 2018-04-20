@@ -1,12 +1,13 @@
 # kubernetes-via-kubeadm
-How to deploy a Kubernetes cluster, on one or more hosts, including the Kubernetes dashboard, Prometheus and Grafana.  
+How to deploy a Kubernetes cluster, on one or more hosts, including the `Kubernetes dashboard`, `Prometheus` and `Grafana`.  
   
-This step by step instruction tells you how to install a Kubernetes cluster for development. All you need is just one (or more) `Fedora` hosts running `Docker`.  
+This step by step instruction tells you how to install a Kubernetes cluster for development via `kubeadm`. All you need is just one (or more) `Fedora` hosts running `Docker`.  
+
+By default you can't (and not recommanded for production workloads) run applications on a Kubernetes `master` node. However, in case you want to setup a development Kubernetes cluster with just one or more hosts you can configure the master to `schedule` pods.  
  
 Table of Contents
 =================
 
-   * [kubernetes-via-kubeadm](#kubernetes-via-kubeadm)
    * [Table of Contents](#table-of-contents)
       * [Deploy Kubernetes cluster via kubeadm](#deploy-kubernetes-cluster-via-kubeadm)
          * [Prerequisites](#prerequisites)
@@ -64,8 +65,6 @@ Table of Contents
 ## Deploy Kubernetes cluster via kubeadm
   
 ### Prerequisites 
-By default you can't (and not recommanded for production workloads) run applications on a Kubernetes `master` node. However, in case you want to setup a development Kubernetes cluster with just one or two hosts you can configure the master to `schedule` pods.  
-  
 One or more hosts with:   
 * Fedora 27 (or higher) installed 
 * Docker 1.13 (or higher) installed  
@@ -830,28 +829,34 @@ Grafana will be deployed the same namespace as Prometheus.
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-dashboard-directory --from-file=grafana-dashboard-directory.yaml
 configmap "grafana-dashboard-directory" created
 ```
-This [grafana-dashboard-directory.yaml](grafana-dashboard-directory.yaml) will be mounted on `/var/lib/grafana/provisioning/dashboards` in the Grafana Deployment.  
+[grafana-dashboard-directory.yaml](grafana-dashboard-directory.yaml) will be mounted on `/var/lib/grafana/provisioning/dashboards` in the Grafana Deployment.  
    
 ### Create configmap for Grafana dashboard
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-dashboard-json --from-file=grafana-dashboard.json
 configmap "grafana-dashboard-json" created
 ```
-This [grafana.ini](grafana.ini) will be mounted on `/var/lib/grafana/dashboards` in the Grafana Deployment.  
+[grafana.ini](grafana.ini) will be mounted on `/var/lib/grafana/dashboards` in the Grafana Deployment.  
    
 ### Create configmap for Grafana datasource
+
+First fill in an IP address of one of your own cluster nodes:
+```
+[root@nuc kubernetes-via-kubeadm]# sed -i 's/NODE-IP/192.168.11.100/g' grafana-datasource.yaml
+```
+
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-datasource --from-file=grafana-datasource.yaml
 configmap "grafana-datasource" created
 ```
-This [grafana-datasource.yaml](grafana-datasource.yaml) will be mounted on `/var/lib/grafana/provisioning/datasources` in the Grafana deployment.  
+[grafana-datasource.yaml](grafana-datasource.yaml) will be mounted on `/var/lib/grafana/provisioning/datasources` in the Grafana deployment.  
    
 ### Creat configmap for Grafana config file
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-ini --from-file=grafana.ini
 configmap "grafana-ini" created
 ```
-This [grafana.ini](grafana.ini) will be mounted on `/etc/grafana` in the Grafana deployment.
+[grafana.ini](grafana.ini) will be mounted on `/etc/grafana` in the Grafana deployment.
    
 ### Deploy Grafana
 ```
