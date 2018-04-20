@@ -689,7 +689,7 @@ eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW5
 You can use the `token` to login to the kubernetes-dashboard, https://NODE-IP:30120   
   
 ### Screenshots 
-[![Kubernetes Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)
+[![Kubernetes Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/kubernetes-dashboard.gif)](https://photos.app.goo.gl/bYJvY26E2djf07092)
   
 ## Deploying Prometheus  
 
@@ -812,13 +812,13 @@ prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 Now you should be able to use the Prometheus GUI from the webbrowser via a `node-ip` or `node-name` and its port: https://NODE-IP:30000  
   
 ### Screenshots Prometheus
-[![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)
+[![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://photos.app.goo.gl/LboyzAM2ShvjZfS42)
    
 ### Access the node-exporter GUI
 Now you should be able to use the node-exporter GUI from the webbrowser via a `node-ip` or `node-name` and its port: https://NODE-IP:30001
   
 ### Screenshot node-exporter
-[![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/prometheus.gif)
+[![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/node-exporter.png)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/node-exporter.png)
   
 ## Grafana
 Grafana will be deployed the same namespace as Prometheus.  
@@ -1092,7 +1092,7 @@ prometheus      NodePort   10.96.154.129    <none>        9090:30000/TCP   45m
 Now you should be able to use the Grafana Dashboard from a webbrowser via a `node-ip` or a `node-name` and its port: https://NODE-IP:30002 (user name = admin, password = admin):  
   
 ### Screenshots Grafana  
-[![Grafana Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)
+[![Grafana Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)](https://photos.app.goo.gl/KcU7s1dJHqKptnF72)
      
 ## Tear down the cluster 
 Perform these steps to desolve the cluster completly and revert all changes.    
