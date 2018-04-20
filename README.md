@@ -723,11 +723,6 @@ clusterrolebinding "prometheus" created
 [root@nuc kubernetes-via-kubeadm]# kubectl create -f prometheus-config.yaml -n prometheus
 configmap "prometheus-config" created
 ```
-Note: If you later on want to make changes to Prometheus, just edit this configmap:
-```
-[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus edit configmap prometheus-config
-```
-Changes will be active after you restart Prometheus (just delete the pod).  
   
 ### Deploy Prometheus  
 Now you're ready to deploy Prometheus and its service:  
@@ -758,6 +753,13 @@ level=info ts=2018-04-01T16:11:15.950194674Z caller=main.go:491 msg="Server is r
 service "prometheus" created
 ```
   
+### Change the Prometheus config  
+If you later on want to make changes to Prometheus, just edit this configmap:
+```
+[root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus edit configmap prometheus-config
+```
+Changes will be active after you restart Prometheus (just delete the pod).  
+   
 ### Deploy node-exporter
 Now you can deploy node-exporter and its service:  
 ```
@@ -820,8 +822,17 @@ Now you should be able to use the node-exporter GUI from the webbrowser via a `n
 ### Screenshot node-exporter
 [![Prometheus](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/node-exporter.png)](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/node-exporter.png)
   
-## Grafana
+## Grafana  
 Grafana will be deployed the same namespace as Prometheus.  
+  
+I have created a dashboard that displays:  
+* node metrics (like memory, disk space, CPU load, network IO, CPU tempeture)  
+* pod and container metrics (CPU usage, memory usage, network IO)  
+* Kubernetes API metrics  
+* Prometheus scraper metrics  
+It is possible to filter on specific `nodes`, `namespaces` and/or `pods`.  
+  
+It is running on ephemeral storage, so each time the Grafana pod is restarted, you loose configuration changes and metrics history and you will start with a fresh Grafana.  
   
 ### Create configmap for Grafana dashboard directory
 ```
@@ -843,7 +854,7 @@ First fill in an IP address of one of your own cluster nodes:
 ```
 [root@nuc kubernetes-via-kubeadm]# sed -i 's/NODE-IP/192.168.11.100/g' grafana-datasource.yaml
 ```
-
+Now create the configmap for the datasource:  
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl -n prometheus create configmap grafana-datasource --from-file=grafana-datasource.yaml
 configmap "grafana-datasource" created
@@ -856,7 +867,7 @@ configmap "grafana-datasource" created
 configmap "grafana-ini" created
 ```
 [grafana.ini](grafana.ini) will be mounted on `/etc/grafana` in the Grafana deployment.
-   
+    
 ### Deploy Grafana
 ```
 [root@nuc kubernetes-via-kubeadm]# kubectl create -f grafana-deployment.yaml -n prometheus 
@@ -1093,7 +1104,13 @@ Now you should be able to use the Grafana Dashboard from a webbrowser via a `nod
   
 ### Screenshots Grafana  
 [![Grafana Dashboard](https://raw.githubusercontent.com/tedsluis/kubernetes-via-kubeadm/master/img/grafana.gif)](https://photos.app.goo.gl/KcU7s1dJHqKptnF72)
-     
+  
+### Modify the Grafana configuration
+If you later on want to change the Grafana configuration you have three options:  
+* Change the configuration via the Grafana GUI. (You can't change every thing and you loose your changes after Grafana restarts).  
+* Edit the `Grafana-*.yaml` file(s), delete the configmap(s), create them again and delete the Grafana pod.  
+* Edit the configmap(s) and delete the Grafana pod.
+        
 ## Tear down the cluster 
 Perform these steps to desolve the cluster completly and revert all changes.    
   
@@ -1179,4 +1196,5 @@ Now you have entirely reverted all changes.
 * [Using kubeadm to Create a Cluster](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/)  
 * [Installing kubeadm](https://kubernetes.io/docs/setup/independent/install-kubeadm/)  
 * [kubeadm init](https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-init)  
-* [Flannel - kubeadm](https://github.com/coreos/flannel/blob/master/Documentation/kubernetes.md)  
+* [Flannel - kubeadm](https://github.com/coreos/flannel/blob/master/Documentation/kubernetes.md) 
+ 
