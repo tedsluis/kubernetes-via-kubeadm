@@ -16,7 +16,7 @@ spec:
         app: grafana
     spec:
       containers:
-        - image: grafana/grafana:latest
+        - image: grafana/grafana:5.0.4
           name: grafana
           env:
             - name: GF_AUTH_BASIC_ENABLED
